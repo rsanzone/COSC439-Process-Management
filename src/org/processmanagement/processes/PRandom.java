@@ -1,6 +1,7 @@
 package org.processmanagement.processes;
 
 import java.util.*;
+import java.lang.Math;
 
 public class PRandom {
 
@@ -11,7 +12,8 @@ public class PRandom {
 	 * @param max upper limit
 	 * @return the random integer
 	 */
-	public int randomInt(int min, int max){
+	public int randomInt(int min, int max)
+	{
 		//new random object
 		Random rand = new Random();
 		//generate a random number between min and max both being
@@ -20,6 +22,17 @@ public class PRandom {
 		
 		return randomNum;
 		
+	}
+	
+	public float randomFloat(float min, float max)
+	{
+		Random rand = new Random();
+		
+		float randomNum = rand.nextFloat() * (max - min) + min;
+		float roundedNum = (float)Math.round(randomNum * 10) / 10;
+
+		
+		return roundedNum;
 	}
 	
 	
