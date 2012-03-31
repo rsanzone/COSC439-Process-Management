@@ -4,6 +4,8 @@ public class Process {
 	private int burst;
 	private int priority;
 	private int arrivalTime;
+	private int waitTime = 0;
+	private int completionTime = 0;
 	Process()
 	{
 		this.burst = 0;
@@ -52,6 +54,18 @@ public class Process {
 	public void setArrivalTime(int arrivalTime) 
 	{
 		this.arrivalTime = arrivalTime;
+	}
+	public int getWaitTime(){
+		return waitTime;
+	}
+	public void setWaitTime(int waitTime){
+		this.waitTime = waitTime;
+	}
+	public int getCompletionTime(){
+		return completionTime;
+	}
+	public void setCompletionTime(int completionTime){
+		this.completionTime = completionTime;
 	}
 
 }

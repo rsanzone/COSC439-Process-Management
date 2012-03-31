@@ -16,15 +16,29 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		ReadyQueue test = new ReadyQueue();
-		Fifo fifoTest = new Fifo();
-		//ArrayList<Process> list = new ArrayList<Process>();
 		
-		test.populateQueue();
-		fifoTest.loadQueue(test);
+		System.out.println("1): First in First out.");
+		System.out.println("Choose an algorithm");
+		int choice;
+		Scanner input = new Scanner(System.in);
+		choice = input.nextInt();
+		switch(choice){
+		case 1: {
+			ReadyQueue test = new ReadyQueue();
+			Fifo fifoTest = new Fifo();
+			//ArrayList<Process> list = new ArrayList<Process>();
+			
+			test.populateQueue();
+			fifoTest.loadQueue(test);
+			
+			fifoTest.start();
+			fifoTest.getStats();
+			break;
+		}
+		default: System.out.println("Invalid choice!!!");
+		break;
+		}
 		
-		fifoTest.start();
-		fifoTest.getStats();
 		
 		
 		
