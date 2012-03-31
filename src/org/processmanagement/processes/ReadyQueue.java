@@ -24,9 +24,9 @@ public class ReadyQueue {
 	public Process randomProcess(){
 			
 		//set random data
-		float burst = rand.randomFloat(0, 100);
+		int burst = rand.randomInt(0, 100);
 		int priority = rand.randomInt(0, 5);
-		float arrivalTime = rand.randomFloat(0, 10);
+		int arrivalTime = rand.randomInt(0, 10);
 		
 		//generate a new process
 		Process proc = new Process(burst, arrivalTime, priority);

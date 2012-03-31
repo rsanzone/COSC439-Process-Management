@@ -1,39 +1,39 @@
 package org.processmanagement.processes;
 
 public class Process {
-	private float burst;
+	private int burst;
 	private int priority;
-	private float arrivalTime;
+	private int arrivalTime;
 	Process()
 	{
 		this.burst = 0;
 		this.priority = 0;
 		this.arrivalTime = 0;
 	}
-	Process(float burst)
+	Process(int burst)
 	{
 		this.burst = burst;
 		this.priority = 0;
 		this.arrivalTime = 0;
 	}
-	Process(float burst,float arrivalTime)
+	Process(int burst,int arrivalTime)
 	{
 		this.burst = burst;
 		this.priority = 0;
 		this.arrivalTime = arrivalTime;
 	}
-	Process(float burst,float arrivalTime,int priority)
+	Process(int burst,int arrivalTime,int priority)
 	{
 		this.burst = burst;
 		this.priority = priority;
 		this.arrivalTime = arrivalTime;
 	}
 	
-	public float getBurst() 
+	public int getBurst() 
 	{
 		return burst;
 	}
-	public void setBurst(float burst) 
+	public void setBurst(int burst) 
 	{
 		this.burst = burst;
 	}
@@ -45,11 +45,11 @@ public class Process {
 	{
 		this.priority = priority;
 	}
-	public float getArrivalTime() 
+	public int getArrivalTime() 
 	{
 		return arrivalTime;
 	}
-	public void setArrivalTime(float arrivalTime) 
+	public void setArrivalTime(int arrivalTime) 
 	{
 		this.arrivalTime = arrivalTime;
 	}
