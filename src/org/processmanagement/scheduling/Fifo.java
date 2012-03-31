@@ -1,30 +1,20 @@
 package org.processmanagement.scheduling;
 
-import java.util.*;
 
-import org.processmanagement.processes.*;
 import org.processmanagement.processes.Process;
 
-public class Fifo {
-	ArrayList<Process> queue = new ArrayList<Process>();
-	float totalBurst = 0.0f;
-	
-	
-	public void loadQueue(ReadyQueue queue){
-		this.queue = queue.getQueue();
-	}
-	
+public class Fifo extends Scheduler {
 	
 	public void start(){
 		int count = 0;
 		
-		for(int i=0; i<queue.size(); i++){
-			Process curProcess = queue.get(count);
+		for(int i=0; i<queue.getQueue().size(); i++){
+			Process curProcess = super.queue.getQueue().get(count);
 			float curBurst = curProcess.getBurst();
 			
-			System.out.println("Running Process " + i);
-			System.out.println("Process " + i + " Burst time: " + curProcess.getBurst());
-			System.out.println("Process "+ i + " Burst time: (long) " + curProcess.getBurst());
+			//System.out.println("Running Process " + i);
+			//System.out.println("Process " + i + " Burst time: " + curProcess.getBurst());
+			//System.out.println("Process "+ i + " Burst time: (long) " + curProcess.getBurst());
 			
 			long initTime = System.currentTimeMillis();
 			long curTime = System.currentTimeMillis();
@@ -37,11 +27,4 @@ public class Fifo {
 		}
 		
 	}
-	
-	public void getStats(){
-		System.out.println("Total Burst Time: " + totalBurst);
-		System.out.println("Average Burst Time: " + (totalBurst/(float)queue.size()));
-	}
-	
-
 }

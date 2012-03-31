@@ -1,8 +1,6 @@
 package org.processmanagement;
 
 import java.util.*;
-import org.processmanagement.processes.*;
-import org.processmanagement.processes.Process;
 import org.processmanagement.scheduling.*;
 
 
@@ -24,15 +22,11 @@ public class Main {
 		choice = input.nextInt();
 		switch(choice){
 		case 1: {
-			ReadyQueue test = new ReadyQueue();
 			Fifo fifoTest = new Fifo();
-			//ArrayList<Process> list = new ArrayList<Process>();
 			
-			test.populateQueue();
-			fifoTest.loadQueue(test);
-			
+			fifoTest.genProcesses();
 			fifoTest.start();
-			fifoTest.getStats();
+			fifoTest.printStats();
 			break;
 		}
 		default: System.out.println("Invalid choice!!!");
