@@ -3,6 +3,8 @@ package org.processmanagement;
 import java.util.*;
 import org.processmanagement.processes.*;
 import org.processmanagement.processes.Process;
+import org.processmanagement.scheduling.*;
+
 
 
 /*
@@ -15,21 +17,16 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		ReadyQueue test = new ReadyQueue();
-		ArrayList<Process> list = new ArrayList<Process>();
+		Fifo fifoTest = new Fifo();
+		//ArrayList<Process> list = new ArrayList<Process>();
 		
 		test.populateQueue();
+		fifoTest.loadQueue(test);
 		
-		list = test.getQueue();
+		fifoTest.start();
+		fifoTest.getStats();
 		
-		int count = 1;
-		for(Process item : list){
-			System.out.println("Process Number: " + count);
-			System.out.println("Arrival Time: " + item.getArrivalTime());
-			System.out.println("Burst Time: " + item.getBurst());
-			System.out.println("Priority: " + item.getPriority());
-			System.out.println();
-			count++;
-		}
+		
 		
 	}
 
