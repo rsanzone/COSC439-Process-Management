@@ -22,16 +22,5 @@ public class PRandom {
 		
 		return randomNum;
 		
-	}
-	
-	/**
-	 * Generates a random float value rounded to the nearest 10th
-	 * 
-	 * @param min float value
-	 * @param max float value
-	 * @return rounded float number
-	 */
-	
-	
-	
+	}		
 }

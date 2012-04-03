@@ -21,7 +21,7 @@ public class ReadyQueue {
 	 * 
 	 * @return the randomly generated process
 	 */
-	public Process randomProcess(){
+	private Process randomProcess(){
 			
 		//set random data
 		int burst = rand.randomInt(0, 100);
