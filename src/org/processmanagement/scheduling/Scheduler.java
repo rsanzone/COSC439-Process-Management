@@ -9,7 +9,7 @@ import org.processmanagement.processes.ReadyQueue;
  */
 public class Scheduler {
 	
-	ReadyQueue queue;
+	public ReadyQueue queue;
 	int totalBurst = 0;
 	int totalWait = 0;
 	int totalComp = 0;

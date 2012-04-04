@@ -16,6 +16,9 @@ public class ReadyQueue {
 	public ArrayList<Process> getQueue(){
 		return processList;
 	}
+	public void setQueue(ArrayList<Process> queue){
+		this.processList = queue;
+	}
 	/**
 	 * Generates a random process object. Using the PRandom class, all of the data in the process is randomly generated.
 	 * 
