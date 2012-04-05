@@ -18,7 +18,7 @@ public class Scheduler {
 		queue = new ReadyQueue();
 	}
 	/**
-	 * generate radom processes for the queue
+	 * generate random processes for the queue
 	 */
 	public void genProcesses(){
 		queue.populateQueue();

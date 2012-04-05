@@ -2,6 +2,9 @@ package org.processmanagement.processes;
 
 public class Process {
 	private int burst;
+	private int burstBeforeIO;
+	private int ioBeforeBurst;
+	private int ioTime;
 	private int priority;
 	private int arrivalTime;
 	private int waitTime = 0;
