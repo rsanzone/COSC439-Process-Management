@@ -39,9 +39,12 @@ public class Scheduler {
 		System.out.println();
 		System.out.println("------------------------------------------------------------");
 		System.out.println("Total Burst Time: " + totalBurst);
-		System.out.println("Average Burst Time: " + (totalBurst/queue.getQueue().size()));
-		System.out.println("Average Wait Time: " + (totalWait/queue.getQueue().size()));
-		System.out.println("Average Completion Time: " + (totalComp/queue.getQueue().size()));
+		System.out.println("Average Burst Time: " + (totalBurst/queue.getNumOfProcesses()));
+		System.out.println("Average Wait Time: " + (totalWait/queue.getNumOfProcesses()));
+		System.out.println("Average Completion Time: " + (totalComp/queue.getNumOfProcesses()));
+	}
+	public void setReadyQueue(ReadyQueue queue){
+		this.queue = queue;
 	}
 
 }

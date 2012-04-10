@@ -33,18 +33,6 @@ public class ShortestJobFirst extends Scheduler{
 			int curBurst = curProcess.getBurst();
 			//set wait time
 			curProcess.setWaitTime(totalBurst);
-			//system time used in the simulation of burst time.
-			
-			/*
-			long initTime = System.currentTimeMillis();
-			 
-			long curTime = System.currentTimeMillis();
-			
-			//loop until a certian amount of time elapses
-			while((curTime - initTime) <= (long)curBurst){
-				//update time
-				curTime = System.currentTimeMillis();
-			}*/
 			
 			//update total burst time
 			totalBurst += curBurst;

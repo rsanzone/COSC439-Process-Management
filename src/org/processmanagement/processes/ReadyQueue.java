@@ -8,6 +8,7 @@ public class ReadyQueue {
 	
 	ArrayList<Process> processList = new ArrayList<Process>();
 	PRandom rand = new PRandom();
+	private int numOfProcesses;
 	
 	/**
 	 * 
@@ -19,11 +20,20 @@ public class ReadyQueue {
 	public void setQueue(ArrayList<Process> queue){
 		this.processList = queue;
 	}
-	/**
-	 * Generates a random process object. Using the PRandom class, all of the data in the process is randomly generated.
-	 * 
-	 * @return the randomly generated process
-	 */
+	public int size(){
+		return processList.size();
+	}
+	public Process get(int index){
+		return processList.get(index);
+	}
+	public ReadyQueue deepCopy(){
+		ReadyQueue copy = new ReadyQueue();
+		for(Process p: this.processList){
+			copy.processList.add(p);
+		}
+		copy.setNumOfProcesses(this.numOfProcesses);
+		return copy;
+	}
 	private Process randomProcess(){
 			
 		//set random data
@@ -38,6 +48,22 @@ public class ReadyQueue {
 		return proc;
 				
 	}
+	private Process randomIOProcess(){
+		//set random data
+		//(int burst, int arrivalTime, int priority, int burstBeforeIO, int ioTime)
+		int burst = rand.randomInt(0, 100);
+		int priority = rand.randomInt(0, 5);
+		int arrivalTime = rand.randomInt(0, 10);
+		int burstSegment = rand.randomInt(1, burst/5);//can't be larger than 1/5 the total burst
+		int ioTime = rand.randomInt(1,5);//small maximum io time seems realistic
+		int ioSegment = rand.randomInt(1, ioTime/5);//can't be larger than 1/5 the total IO time
+		
+		//generate new process
+		Process proc = new Process(burst,arrivalTime,priority,burstSegment,ioTime,ioSegment);
+		
+		//return the process
+		return proc;
+	}
 	
 	/**
 	 * Populates a processList with a random number, between 1 and MAX_PROCESS_NUMBER, of processes
@@ -50,8 +76,15 @@ public class ReadyQueue {
 		//populate a list with the generated number of processes
 		for(int i = 0; i <= processNum; i++){
 			processList.add(randomProcess());
-		}		
+		}	
+		setNumOfProcesses(processList.size());
 		
+	}
+	public int getNumOfProcesses() {
+		return numOfProcesses;
+	}
+	public void setNumOfProcesses(int numOfProcesses) {
+		this.numOfProcesses = numOfProcesses;
 	}
 	
 }
