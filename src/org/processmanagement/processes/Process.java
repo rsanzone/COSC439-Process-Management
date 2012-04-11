@@ -5,6 +5,7 @@ public class Process {
 	private int burst;
 	private int priority;
 	private int arrivalTime;
+	private String name;
 	//data only important for IO processes
 	private int remainingBurst;
 	private int burstSegment; //burst time before going to IO
@@ -23,14 +24,15 @@ public class Process {
 		this.ioSegment = 0;
 		this.remainingBurst = 0;
 	}
-	Process(int burst,int arrivalTime,int priority)
+	Process(int burst,int arrivalTime,int priority,String name)
 	{
 		this.burst = burst;
 		this.remainingBurst = burst;
 		this.priority = priority;
 		this.arrivalTime = arrivalTime;
+		this.setName(name);
 	}
-	Process(int burst, int arrivalTime, int priority, int burstSegment, int ioTime, int ioSegment){
+	Process(int burst, int arrivalTime, int priority, int burstSegment, int ioTime, int ioSegment, String name){
 		this.burst = burst;
 		this.remainingBurst = burst;
 		this.arrivalTime = arrivalTime;
@@ -38,6 +40,7 @@ public class Process {
 		this.burstSegment = burstSegment;
 		this.ioTime = ioTime;
 		this.ioSegment = ioSegment;
+		this.setName(name);
 	}
 	
 	public int getBurst() 
@@ -87,6 +90,12 @@ public class Process {
 	}
 	public int getElapsedBurst() {
 		return this.burst - this.remainingBurst;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

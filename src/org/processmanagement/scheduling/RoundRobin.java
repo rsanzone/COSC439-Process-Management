@@ -15,7 +15,7 @@ public class RoundRobin extends Scheduler {
 	
 	private void sortQueue(){
 		//java sort method with a comparator class to compare arrival times
-		Collections.sort(queue.getQueue(), new Comparator<Process>() {
+		Collections.sort(readyQueue, new Comparator<Process>() {
 			public int compare(Process process1, Process process2) {
 				 return process1.getArrivalTime() - process2.getArrivalTime();
 			}
@@ -34,15 +34,15 @@ public class RoundRobin extends Scheduler {
 		int curBurst = 0;
 		
 		//gets the sum of all the bursts in the ready queue
-		for(Process p: queue.getQueue()){
+		for(Process p: readyQueue){
 			totalBurst += p.getBurst();
 		}
 		//this process will continue to loop until all of the process have been completed
 		
-		while (!queue.getQueue().isEmpty()) {
-			for (int i = 0; i < queue.getQueue().size(); i++) {
+		while (!readyQueue.isEmpty()) {
+			for (int i = 0; i < readyQueue.size(); i++) {
 				// initialize the current process
-				Process p = queue.get(i);
+				Process p = readyQueue.get(i);
 				if (p.getRemainingBurst() > quantum) {// the job will not be finished on
 												// this pass
 					curBurst += quantum;
@@ -63,7 +63,7 @@ public class RoundRobin extends Scheduler {
 					//updates the total completion time for the scheduler
 					totalComp += curBurst;
 					//removes the process from the queue
-					queue.getQueue().remove(i);
+					readyQueue.remove(i);
 					i--;
 				}
 

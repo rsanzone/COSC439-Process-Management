@@ -4,9 +4,6 @@ import java.util.*;
 
 import org.processmanagement.scheduling.*;
 import org.processmanagement.processes.Process;
-import org.processmanagement.processes.ReadyQueue;
-
-
 
 /*
  * This will be the main class of the project.
@@ -20,7 +17,7 @@ public class Main {
 		
 		int choice;
 		boolean keepProcesses = false;
-		ReadyQueue holder = new ReadyQueue();
+		ArrayList<Process> holder = new ArrayList<Process>();
 		
 		do{
 			System.out.println("0): Quit.");
@@ -41,9 +38,10 @@ public class Main {
 				if(keepProcesses == false)
 					fifoTest.genProcesses();
 				else
-					fifoTest.setReadyQueue(holder);
-				holder = fifoTest.queue.deepCopy();
+					fifoTest.setPList(holder);
+				holder = fifoTest.getPList();
 				fifoTest.start();
+				System.out.println();
 				fifoTest.printStats();
 				break;
 			}
@@ -52,9 +50,10 @@ public class Main {
 				if(keepProcesses == false)
 					sjfTest.genProcesses();
 				else
-					sjfTest.setReadyQueue(holder);
-				holder = sjfTest.queue.deepCopy();
+					sjfTest.setPList(holder);
+				holder = sjfTest.getPList();
 				sjfTest.start();
+				System.out.println();
 				sjfTest.printStats();
 				break;
 
@@ -66,9 +65,10 @@ public class Main {
 				if(keepProcesses == false)
 					rrTest.genProcesses();
 				else
-					rrTest.setReadyQueue(holder);
-				holder = rrTest.queue.deepCopy();
+					rrTest.setPList(holder);
+				holder = rrTest.getPList();
 				rrTest.start();
+				System.out.println();
 				rrTest.printStats();
 			}
 			default:

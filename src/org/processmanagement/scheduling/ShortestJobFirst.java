@@ -12,7 +12,7 @@ public class ShortestJobFirst extends Scheduler{
 	 */
 	private void sortQueue(){
 		//java sort method with a comparator class to compare arrival times
-		Collections.sort(queue.getQueue(), new Comparator<Process>() {
+		Collections.sort(readyQueue, new Comparator<Process>() {
 			public int compare(Process process1, Process process2) {
 				 return process1.getBurst() - process2.getBurst();
 			}
@@ -28,7 +28,8 @@ public class ShortestJobFirst extends Scheduler{
 		
 		System.out.println("Running Processes...");
 		//step through the queue and simulate the burt time for each process
-		for(Process curProcess : super.queue.getQueue()){
+		for(Process curProcess : readyQueue){
+			System.out.print(totalBurst + "---[" + curProcess.getName() + "]---");
 			//set the burst for the current process
 			int curBurst = curProcess.getBurst();
 			//set wait time
@@ -43,6 +44,7 @@ public class ShortestJobFirst extends Scheduler{
 			totalComp += curProcess.getCompletionTime();
 			
 		}
+		System.out.print(totalBurst);
 		
 	}
 }
