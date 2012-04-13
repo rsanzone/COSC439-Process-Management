@@ -24,7 +24,7 @@ public class FirstInFirstOut extends Scheduler {
 	 */			
 	public void start(){
 		for(Process p:pList){
-			readyQueue.add(p);
+			readyQueue.add(p.deepCopy());
 			totalBurst += p.getBurst();
 		}
 		printProcesses();

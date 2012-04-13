@@ -41,7 +41,7 @@ public class ShortestJobFirst extends Scheduler{
 	public void sjf() {
 		int elapsedBurst = 0;
 		for (Process p : pList) {
-			readyQueue.add(p);
+			readyQueue.add(p.deepCopy());
 		}
 		while (!readyQueue.isEmpty()) {
 			boolean idle = true;

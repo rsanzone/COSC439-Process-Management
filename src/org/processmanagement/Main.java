@@ -48,8 +48,8 @@ public class Main {
 				if(keepProcesses == false)
 					sjfTest.genProcesses();
 				else
-					sjfTest.setPList(holder);
-				holder = sjfTest.getPList();
+					sjfTest.setPList(copy(holder));
+				holder = copy(sjfTest.getPList());
 				sjfTest.start();
 				break;
 
@@ -61,11 +61,9 @@ public class Main {
 				if(keepProcesses == false)
 					rrTest.genProcesses();
 				else
-					rrTest.setPList(holder);
-				holder = rrTest.getPList();
+					rrTest.setPList(copy(holder));
+				holder = copy(rrTest.getPList());
 				rrTest.start();
-				System.out.println();
-				rrTest.printStats();
 			}
 			default:
 				System.out.println("Invalid choice!!!");

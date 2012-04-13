@@ -42,6 +42,10 @@ public class Process {
 		this.setIoSegment(ioSegment);
 		this.setName(name);
 	}
+	public Process deepCopy(){
+		Process copy = new Process(burst,arrivalTime,priority,burstSegment,ioTime,ioSegment,name);
+		return copy;
+	}
 	
 	public int getBurst() 
 	{

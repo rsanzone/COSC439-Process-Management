@@ -27,13 +27,12 @@ public class RoundRobin extends Scheduler {
 	 */			
 	public void start(){
 		for(Process p:pList){
-			readyQueue.add(p);
+			readyQueue.add(p.deepCopy());
 			totalBurst += p.getBurst();
 		}
 		size = pList.size();
 		printProcesses();
 		sortQueue();
-		
 		System.out.println("Running Processes...");
 		rr();
 		//step through the queue and process each job for the specified time slice
