@@ -19,6 +19,7 @@ public class Scheduler {
 	int totalBurst = 0;
 	int totalWait = 0;
 	int totalComp = 0;
+	int size = 0;
 	
 	public Scheduler(){
 		pList = new ArrayList<Process>();
@@ -29,32 +30,35 @@ public class Scheduler {
 	 */
 	public void genProcesses(){
 		pList = rand.genProcesses();
-		System.out.println(readyQueue.size() + " processes have been generated!"+'\n');
-		
-		//later on processes will only be added at the appropriate arrival time
-		for(Process p:pList){
-			readyQueue.add(p);
-		}
-		
+		System.out.println(size + " processes have been generated!"+'\n');
 	}
 	/**
 	 * Print out various stats calculated by the simulation.
 	 */
 	public void printStats(){
-		for(int i = 0;i<pList.size();i++){
-			Process curProcess = pList.get(i);
-			System.out.println("P"+(i+1)+": ");
-			System.out.println("	Arrival Time = "+curProcess.getArrivalTime());
-			System.out.println("	Burst Time = "+curProcess.getBurst());
-			System.out.println("	Wait Time = "+curProcess.getWaitTime());
-			System.out.println("	Completion Time = "+curProcess.getCompletionTime());
-		}
 		System.out.println();
 		System.out.println("------------------------------------------------------------");
 		System.out.println("Total Burst Time: " + totalBurst);
-		System.out.println("Average Burst Time: " + (totalBurst/pList.size()));
-		System.out.println("Average Wait Time: " + (totalWait/pList.size()));
-		System.out.println("Average Completion Time: " + (totalComp/pList.size()));
+		System.out.println("Average Burst Time: " + (totalBurst/size));
+		System.out.println("Average Wait Time: " + (totalWait/size));
+		System.out.println("Average Completion Time: " + (totalComp/size));
+	}
+	public void printProcesses(){
+		for(Process p:pList){
+			System.out.println(p.getName()+": ");
+			System.out.println("	Arrival Time = "+p.getArrivalTime());
+			System.out.println("	Burst Time = "+p.getBurst());
+			//System.out.println("	Wait Time = "+p.getWaitTime());
+			//System.out.println("	Completion Time = "+p.getCompletionTime());
+		}
+	}
+	public int getNextArrivalTime(){
+		int time = pList.get(0).getArrivalTime();
+		for(Process p: pList){
+			if (p.getArrivalTime()<time)
+				time = p.getArrivalTime();
+		}
+		return time;
 	}
 	public ArrayList<Process> getReadyQueue(){
 		return this.readyQueue;

@@ -19,9 +19,9 @@ public class Process {
 		this.burst = 0;
 		this.priority = 0;
 		this.arrivalTime = 0;
-		this.burstSegment = 0;
-		this.ioTime = 0;
-		this.ioSegment = 0;
+		this.setBurstSegment(0);
+		this.setIoTime(0);
+		this.setIoSegment(0);
 		this.remainingBurst = 0;
 	}
 	Process(int burst,int arrivalTime,int priority,String name)
@@ -37,9 +37,9 @@ public class Process {
 		this.remainingBurst = burst;
 		this.arrivalTime = arrivalTime;
 		this.priority = priority;
-		this.burstSegment = burstSegment;
-		this.ioTime = ioTime;
-		this.ioSegment = ioSegment;
+		this.setBurstSegment(burstSegment);
+		this.setIoTime(ioTime);
+		this.setIoSegment(ioSegment);
 		this.setName(name);
 	}
 	
@@ -96,6 +96,24 @@ public class Process {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public int getBurstSegment() {
+		return burstSegment;
+	}
+	public void setBurstSegment(int burstSegment) {
+		this.burstSegment = burstSegment;
+	}
+	public int getIoTime() {
+		return ioTime;
+	}
+	public void setIoTime(int ioTime) {
+		this.ioTime = ioTime;
+	}
+	public int getIoSegment() {
+		return ioSegment;
+	}
+	public void setIoSegment(int ioSegment) {
+		this.ioSegment = ioSegment;
 	}
 
 }

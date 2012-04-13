@@ -38,11 +38,9 @@ public class Main {
 				if(keepProcesses == false)
 					fifoTest.genProcesses();
 				else
-					fifoTest.setPList(holder);
-				holder = fifoTest.getPList();
+					fifoTest.setPList(copy(holder));
+				holder = copy(fifoTest.getPList());
 				fifoTest.start();
-				System.out.println();
-				fifoTest.printStats();
 				break;
 			}
 			case 2: {
@@ -53,8 +51,6 @@ public class Main {
 					sjfTest.setPList(holder);
 				holder = sjfTest.getPList();
 				sjfTest.start();
-				System.out.println();
-				sjfTest.printStats();
 				break;
 
 			}
@@ -98,6 +94,13 @@ public class Main {
 			break;
 		}
 		return result;
+	}
+	public static ArrayList<Process> copy(ArrayList<Process> origin){
+		ArrayList<Process> copy = new ArrayList<Process>();
+		for(Process p:origin){
+			copy.add(p);
+		}
+		return copy;
 	}
 
 }

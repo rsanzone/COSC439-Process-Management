@@ -19,31 +19,41 @@ public class FirstInFirstOut extends Scheduler {
 			}
 		});
 	}
-	
-
 	/**
 	 * Method that starts the first in first out scheduler simulation.
 	 */			
 	public void start(){
-		
+		for(Process p:pList){
+			readyQueue.add(p);
+			totalBurst += p.getBurst();
+		}
+		printProcesses();
+		size = pList.size();
 		sortQueue();
 		System.out.println("Running Processes...");
 		//step through the queue and simulate the burst time for each process
+		fifo();
+		printStats();
+		
+	}
+	public void fifo(){
+		int elapsedBurst = 0;
 		for(Process curProcess : readyQueue){
-			System.out.print(totalBurst + "---[" + curProcess.getName() + "]---");
-			//set the burst for the current process
-			int curBurst = curProcess.getBurst();
+			if(curProcess.getArrivalTime()>elapsedBurst){
+				System.out.print(elapsedBurst + "---[IDLE]---");
+				elapsedBurst = curProcess.getArrivalTime();
+			}
+			System.out.print(elapsedBurst + "---[" + curProcess.getName() + "]---");
 			//set wait time
-			curProcess.setWaitTime(totalBurst);
-			//update total burst time
-			totalBurst += curBurst;
+			curProcess.setWaitTime(elapsedBurst - curProcess.getArrivalTime());
+			//update the elapsed
+			elapsedBurst += curProcess.getBurst();
 			//set completion time when process is done running
-			curProcess.setCompletionTime(totalBurst);
+			curProcess.setCompletionTime(elapsedBurst - curProcess.getArrivalTime());
 			
 			totalWait += curProcess.getWaitTime();
 			totalComp += curProcess.getCompletionTime();
-			
 		}
-		
+		System.out.print(elapsedBurst);
 	}
 }

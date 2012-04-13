@@ -1,2 +1,6 @@
-This will be the README for our project
-changed my Matthew Holtzem
+Current tasks 
+Ron: Working implementing IO queue to the current algorithms starting with First In First Out.
+	Making current algorithms preemptive if necessary.
+Matt: Working on XML File input and output and possible batch testing/comparison of algorithms.
+Joe: Developing GUI?
+Rachel: ?

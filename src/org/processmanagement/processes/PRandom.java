@@ -22,15 +22,19 @@ public class PRandom {
 		
 		return randomNum;
 	}	
-	public ArrayList<Process> genProcesses(){
-		//create a random num between 1 and MAX_PROCESS_NUMBER
-				int processNum = randomInt(1, MAX_PROCESS_NUMBER);
-				ArrayList<Process> processList = new ArrayList<Process>();
-				//populate a list with the generated number of processes
-				for(int i = 0; i <= processNum; i++){
-					processList.add(randomProcess(i+1));
-				}	
-				return processList;
+
+	public ArrayList<Process> genProcesses() {
+		// create a random num between 1 and MAX_PROCESS_NUMBER
+		System.out.println("How many processes should be generated?: ");
+		Scanner input = new Scanner(System.in);
+		int processNum = input.nextInt();
+		// int processNum = randomInt(1, MAX_PROCESS_NUMBER);
+		ArrayList<Process> processList = new ArrayList<Process>();
+		// populate a list with the generated number of processes
+		for (int i = 0; i <= processNum; i++) {
+			processList.add(randomProcess(i + 1));
+		}
+		return processList;
 	}
 	private Process randomProcess(int count){
 		
