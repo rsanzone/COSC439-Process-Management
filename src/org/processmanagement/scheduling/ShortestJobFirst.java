@@ -56,7 +56,7 @@ public class ShortestJobFirst extends Scheduler{
 					elapsedBurst += p.getBurst();
 					totalComp += (elapsedBurst - p.getArrivalTime());
 					p.setCompletionTime(elapsedBurst - p.getArrivalTime());
-					pList.set(pList.indexOf(p), p);
+					pList.set(readyQueue.indexOf(p), p);
 					readyQueue.remove(p);
 					i--;
 				}

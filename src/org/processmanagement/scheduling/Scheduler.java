@@ -30,7 +30,6 @@ public class Scheduler {
 	 */
 	public void genProcesses(){
 		pList = rand.genProcesses();
-		System.out.println(size + " processes have been generated!"+'\n');
 	}
 	/**
 	 * Print out various stats calculated by the simulation.
@@ -39,9 +38,9 @@ public class Scheduler {
 		System.out.println();
 		System.out.println("------------------------------------------------------------");
 		System.out.println("Total Burst Time: " + totalBurst);
-		System.out.println("Average Burst Time: " + (totalBurst/size));
-		System.out.println("Average Wait Time: " + (totalWait/size));
-		System.out.println("Average Completion Time: " + (totalComp/size));
+		System.out.println("Average Burst Time: " + (float)(totalBurst/size));
+		System.out.println("Average Wait Time: " + (float)(totalWait/size));
+		System.out.println("Average Completion Time: " + (float)(totalComp/size));
 	}
 	public void printProcesses(){
 		for(Process p:pList){

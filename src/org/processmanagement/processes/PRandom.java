@@ -31,9 +31,10 @@ public class PRandom {
 		// int processNum = randomInt(1, MAX_PROCESS_NUMBER);
 		ArrayList<Process> processList = new ArrayList<Process>();
 		// populate a list with the generated number of processes
-		for (int i = 0; i <= processNum; i++) {
-			processList.add(randomProcess(i + 1));
+		for (int i = 1; i <= processNum; i++) {
+			processList.add(randomProcess(i));
 		}
+		System.out.println(processNum+" processes have been generated!");
 		return processList;
 	}
 	private Process randomProcess(int count){
