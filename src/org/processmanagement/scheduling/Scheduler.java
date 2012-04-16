@@ -2,6 +2,7 @@ package org.processmanagement.scheduling;
 
 import java.util.ArrayList;
 
+import org.processmanagement.fileio.WriteXML;
 import org.processmanagement.processes.PRandom;
 import org.processmanagement.processes.Process;
 
@@ -15,6 +16,7 @@ public class Scheduler {
 	ArrayList<Process> pList;
 	ArrayList<Process> readyQueue = new ArrayList<Process>();
 	PRandom rand = new PRandom();
+	WriteXML writer = new WriteXML();
 	
 	int totalBurst = 0;
 	int totalWait = 0;
@@ -30,6 +32,9 @@ public class Scheduler {
 	 */
 	public void genProcesses(){
 		pList = rand.genProcesses();
+	}
+	public void saveProcesses(){
+		writer.savePList(pList);
 	}
 	/**
 	 * Print out various stats calculated by the simulation.

@@ -24,6 +24,7 @@ public class Main {
 			System.out.println("1): First in First out.");
 			System.out.println("2): Shortest Job First.");
 			System.out.println("3): Round Robin.");
+			System.out.println("4): Test XML Output.");
 			System.out.println("Choose an algorithm");
 
 			Scanner input = new Scanner(System.in);
@@ -64,6 +65,12 @@ public class Main {
 					rrTest.setPList(copy(holder));
 				holder = copy(rrTest.getPList());
 				rrTest.start();
+			}
+			case 4: {
+				Scheduler scheduler = new Scheduler();
+				scheduler.genProcesses();
+				scheduler.saveProcesses();
+				break;
 			}
 			default:
 				System.out.println("Invalid choice!!!");
