@@ -18,7 +18,25 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class WriteXML {
+public class FileManager {
+	public void printSavedLists(){
+		
+		  String path = "SavedLists"; 
+		 
+		  String files;
+		  File folder = new File(path);
+		  File[] listOfFiles = folder.listFiles(); 
+		 
+		  for (int i = 0; i < listOfFiles.length; i++) 
+		  {
+		 
+		   if (listOfFiles[i].isFile()) 
+		   {
+		   files = listOfFiles[i].getName();
+		   System.out.println(files);
+		      }
+		  }
+	}
 	public void savePList(ArrayList<Process> pList) {
 		try {
 
@@ -77,6 +95,10 @@ public class WriteXML {
 			tfe.printStackTrace();
 		}
 
+	}
+	public ArrayList<Process> loadPList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
