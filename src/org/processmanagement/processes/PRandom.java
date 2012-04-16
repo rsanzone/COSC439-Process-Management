@@ -41,12 +41,11 @@ public class PRandom {
 		
 		//set random data
 		int burst = randomInt(0, 100);
-		int priority = randomInt(0, 5);
 		int arrivalTime = randomInt(0, 10);
 		String name = "P"+count;
 		
 		//generate a new process
-		Process proc = new Process(burst, arrivalTime, priority,name);
+		Process proc = new Process(burst, arrivalTime,name);
 		
 		//return the process
 		return proc;
@@ -56,7 +55,6 @@ public class PRandom {
 		//set random data
 		//(int burst, int arrivalTime, int priority, int burstBeforeIO, int ioTime)
 		int burst = randomInt(0, 100);
-		int priority = randomInt(0, 5);
 		int arrivalTime = randomInt(0, 10);
 		int burstSegment = randomInt(1, burst/5);//can't be larger than 1/5 the total burst
 		int ioTime = randomInt(1,5);//small maximum io time seems realistic
@@ -64,7 +62,7 @@ public class PRandom {
 		String name = "P"+count;
 		
 		//generate new process
-		Process proc = new Process(burst,arrivalTime,priority,burstSegment,ioTime,ioSegment,name);
+		Process proc = new Process(burst,arrivalTime,burstSegment,ioTime,ioSegment,name);
 		
 		//return the process
 		return proc;

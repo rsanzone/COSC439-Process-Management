@@ -3,7 +3,6 @@ package org.processmanagement.processes;
 public class Process {
 	//default important data
 	private int burst;
-	private int priority;
 	private int arrivalTime;
 	private String name;
 	//data only important for IO processes
@@ -17,33 +16,30 @@ public class Process {
 	Process()
 	{
 		this.burst = 0;
-		this.priority = 0;
 		this.arrivalTime = 0;
 		this.setBurstSegment(0);
 		this.setIoTime(0);
 		this.setIoSegment(0);
 		this.remainingBurst = 0;
 	}
-	Process(int burst,int arrivalTime,int priority,String name)
+	Process(int burst,int arrivalTime,String name)
 	{
 		this.burst = burst;
 		this.remainingBurst = burst;
-		this.priority = priority;
 		this.arrivalTime = arrivalTime;
 		this.setName(name);
 	}
-	Process(int burst, int arrivalTime, int priority, int burstSegment, int ioTime, int ioSegment, String name){
+	Process(int burst, int arrivalTime, int burstSegment, int ioTime, int ioSegment, String name){
 		this.burst = burst;
 		this.remainingBurst = burst;
 		this.arrivalTime = arrivalTime;
-		this.priority = priority;
 		this.setBurstSegment(burstSegment);
 		this.setIoTime(ioTime);
 		this.setIoSegment(ioSegment);
 		this.setName(name);
 	}
 	public Process deepCopy(){
-		Process copy = new Process(burst,arrivalTime,priority,burstSegment,ioTime,ioSegment,name);
+		Process copy = new Process(burst,arrivalTime,burstSegment,ioTime,ioSegment,name);
 		return copy;
 	}
 	
@@ -54,14 +50,6 @@ public class Process {
 	public void setBurst(int burst) 
 	{
 		this.burst = burst;
-	}
-	public int getPriority() 
-	{
-		return priority;
-	}
-	public void setPriority(int priority) 
-	{
-		this.priority = priority;
 	}
 	public int getArrivalTime() 
 	{
