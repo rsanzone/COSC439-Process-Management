@@ -18,6 +18,7 @@ public class Main {
 		
 		int choice;
 		boolean keepProcesses = false;
+		boolean fileLoaded = false;
 		ArrayList<Process> holder = new ArrayList<Process>();
 		
 		do{
@@ -26,8 +27,11 @@ public class Main {
 			System.out.println("2): Shortest Job First.");
 			System.out.println("3): Round Robin.");
 			System.out.println("4): Test XML Output.");
+			System.out.println("5): Load Saved Process List.");
 			System.out.println("Choose an algorithm");
-
+			
+			fileLoaded = false;
+			
 			Scanner input = new Scanner(System.in);
 			choice = input.nextInt();
 			switch (choice) {
@@ -66,6 +70,7 @@ public class Main {
 					rrTest.setPList(copy(holder));
 				holder = copy(rrTest.getPList());
 				rrTest.start();
+				break;
 			}
 			case 4: {
 				Scheduler scheduler = new Scheduler();
@@ -73,11 +78,18 @@ public class Main {
 				scheduler.saveProcesses();
 				break;
 			}
+			case 5: {
+				FileManager manager = new FileManager();
+				holder =  copy(manager.loadPList());
+				keepProcesses = true;
+				fileLoaded = true;
+				break;
+			}
 			default:
 				System.out.println("Invalid choice!!!");
 				break;
 			}
-			if(choice!=0)
+			if(choice!=0&&!fileLoaded)
 				keepProcesses = askToKeep();
 		}while(choice!=0);
 		

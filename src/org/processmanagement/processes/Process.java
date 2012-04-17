@@ -22,7 +22,7 @@ public class Process {
 		this.setIoSegment(0);
 		this.remainingBurst = 0;
 	}
-	Process(int burst,int arrivalTime,String name)
+	public Process(int burst,int arrivalTime,String name)
 	{
 		this.burst = burst;
 		this.remainingBurst = burst;

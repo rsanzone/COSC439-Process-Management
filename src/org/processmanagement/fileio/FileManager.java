@@ -17,6 +17,8 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class FileManager {
 	public void printSavedLists(){
@@ -97,8 +99,43 @@ public class FileManager {
 
 	}
 	public ArrayList<Process> loadPList() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Process> pList = new ArrayList<Process>();
+		try {
+			Scanner input = new Scanner(System.in);
+			System.out.println("Available saved lists are: ");
+			printSavedLists();
+			System.out.print("Enter the name of the file you wish to load: ");
+			String fileName = input.nextLine();
+			File fXmlFile = new File("SavedLists\\"+fileName);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(fXmlFile);
+			doc.getDocumentElement().normalize();
+	 
+			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+			NodeList nList = doc.getElementsByTagName("Process");
+			System.out.println("-----------------------");
+	 
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+	 
+			   Node nNode = nList.item(temp);
+			   if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+	 
+			      Element eElement = (Element) nNode;
+		          pList.add(new Process(Integer.parseInt(getTagValue("arrivalTime", eElement)),Integer.parseInt(getTagValue("burst", eElement)),getTagValue("name", eElement)));
+			   }
+			}
+		  } catch (Exception e) {
+			e.printStackTrace();
+		  }
+		return pList;
 	}
+	private static String getTagValue(String sTag, Element eElement) {
+		NodeList nlList = eElement.getElementsByTagName(sTag).item(0).getChildNodes();
+	 
+	        Node nValue = (Node) nlList.item(0);
+	 
+		return nValue.getNodeValue();
+	  }
 
 }
