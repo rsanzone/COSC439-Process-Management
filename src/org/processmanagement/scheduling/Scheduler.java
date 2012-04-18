@@ -79,5 +79,14 @@ public class Scheduler {
 	public void setPList(ArrayList<Process> queue){
 		this.pList = queue;
 	}
+	public int getTotalWaitTime(){
+		return totalWait;
+	}
+	public int getTotalCompTime(){
+		return totalComp;
+	}
+	public int getSize(){
+		return size;
+	}
 
 }

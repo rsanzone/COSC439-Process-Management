@@ -4,7 +4,7 @@ import java.util.*;
 //import java.lang.Math;
 
 public class PRandom {
-	final int MAX_PROCESS_NUMBER = 100;
+	final int MAX_PROCESS_NUMBER = 200;
 	/**
 	 * Generates a random integer in range between min and max
 	 * 
@@ -29,6 +29,17 @@ public class PRandom {
 		Scanner input = new Scanner(System.in);
 		int processNum = input.nextInt();
 		// int processNum = randomInt(1, MAX_PROCESS_NUMBER);
+		ArrayList<Process> processList = new ArrayList<Process>();
+		// populate a list with the generated number of processes
+		for (int i = 1; i <= processNum; i++) {
+			processList.add(randomProcess(i));
+		}
+		System.out.println(processNum+" processes have been generated!");
+		return processList;
+	}
+	public ArrayList<Process> genProcesses_randNum() {
+		//create a random num between 1 and MAX_PROCESS_NUMBER
+		int processNum = randomInt(1, MAX_PROCESS_NUMBER);
 		ArrayList<Process> processList = new ArrayList<Process>();
 		// populate a list with the generated number of processes
 		for (int i = 1; i <= processNum; i++) {

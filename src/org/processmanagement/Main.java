@@ -15,16 +15,103 @@ public class Main {
 	/**
 	 * @param args
 	 */
-	static boolean fileLoaded;
+	
 	static ArrayList<Process> holder = new ArrayList<Process>();
 	
 	public static void main(String[] args) {
 		menu1();
 	}
+	public static void printMenu1(){
+		System.out.println("Choose an option...");
+		System.out.println("0): Quit.");
+		System.out.println("1): Load Process List.");
+		System.out.println("2): Create New Process List.");
+		System.out.println("3): Run a large batch coparison.");
+	}
+	public static void menu1(){
+		boolean quit = false;
+		int choice;
+		Scanner input = new Scanner(System.in);
+		do{
+			printMenu1();
+			choice = input.nextInt();
+			switch (choice) {
+			case 0: {
+				quit = false;
+				System.out.println("Exiting...");
+				break;
+			}
+			case 1: {
+				FileManager manager = new FileManager();
+				holder = copy(manager.loadPList());
+				break;
+			}
+			case 2: {
+				PRandom random = new PRandom();
+				holder = copy(random.genProcesses());
+				System.out.println("Would you like to save this Process List? (y/n)");
+				char answer = input.next().toLowerCase().charAt(0);
+				if(answer == 'y'){
+					FileManager manager = new FileManager();
+					manager.savePList(holder);
+				}
+				break;
+			}
+			case 3: {
+				float fifoWaitTime = 0;
+				float fifoCompTime = 0;
+				float sjfWaitTime = 0;
+				float sjfCompTime = 0;
+				float rrWaitTime = 0;
+				float rrCompTime = 0;
+				
+				PRandom random = new PRandom();
+				System.out.println("How many simulations would you like to run? ");
+				int num = input.nextInt();
+				for(int i = 0;i<num;i++){
+					ArrayList<Process> list = random.genProcesses_randNum();
+					
+					FirstInFirstOut fifo = new FirstInFirstOut();
+					fifo.setPList(copy(list));
+					fifo.start();
+					fifoWaitTime += fifo.getTotalWaitTime()/fifo.getSize();
+					fifoCompTime += fifo.getTotalCompTime()/fifo.getSize();
+					
+					ShortestJobFirst sjf = new ShortestJobFirst();
+					sjf.setPList(copy(list));
+					sjf.start();
+					sjfWaitTime += sjf.getTotalWaitTime()/sjf.getSize();
+					sjfCompTime += sjf.getTotalCompTime()/sjf.getSize();
+					
+					RoundRobin rr = new RoundRobin(random.randomInt(1, 20));
+					rr.setPList(copy(list));
+					rr.start();
+					rrWaitTime += rr.getTotalWaitTime()/rr.getSize();
+					rrCompTime += rr.getTotalCompTime()/rr.getSize();
+				}
+				System.out.println("After "+num+" simulations, the stats were as follows: ");
+				System.out.println("First In First Out: Avg Wait Time = "+fifoWaitTime/num+" Avg Turnaround Time = "+fifoCompTime/num);
+				System.out.println("Shortest Job First: Avg Wait Time = "+sjfWaitTime/num+" Avg Turnaround Time = "+sjfCompTime/num);
+				System.out.println("Round Robin:        Avg Wait Time = "+rrWaitTime/num+" Avg Turnaround Time = "+rrCompTime/num);
+				break;
+			}
+			default:
+				break;
+			}
+			if(choice!=3)
+				menu2();
+		}while(!quit);
+	}
+	public static void printMenu2(){
+		System.out.println("0): Go Back.");
+		System.out.println("1): First in First out.");
+		System.out.println("2): Shortest Job First.");
+		System.out.println("3): Round Robin.");
+		System.out.println("Choose an algorithm");
+	}
 	public static void menu2(){
 		int choice;
 		do{
-			fileLoaded = false;
 			printMenu2();
 			Scanner input = new Scanner(System.in);
 			choice = input.nextInt();
@@ -61,74 +148,6 @@ public class Main {
 				break;
 			}
 		}while(choice!=0);
-	}
-	public static void printMenu2(){
-		System.out.println("0): Go Back.");
-		System.out.println("1): First in First out.");
-		System.out.println("2): Shortest Job First.");
-		System.out.println("3): Round Robin.");
-		System.out.println("Choose an algorithm");
-	}
-	public static void menu1(){
-		boolean quit = false;
-		int choice;
-		Scanner input = new Scanner(System.in);
-		do{
-			printMenu1();
-			choice = input.nextInt();
-			switch (choice) {
-			case 0: {
-				quit = false;
-				System.out.println("Exiting...");
-				break;
-			}
-			case 1: {
-				FileManager manager = new FileManager();
-				holder = copy(manager.loadPList());
-				break;
-			}
-			case 2: {
-				PRandom random = new PRandom();
-				holder = copy(random.genProcesses());
-				System.out.println("Would you like to save this Process List? (y/n)");
-				char answer = input.next().toLowerCase().charAt(0);
-				if(answer == 'y'){
-					FileManager manager = new FileManager();
-					manager.savePList(holder);
-				}
-				break;
-			}
-			default:
-				break;
-			}
-			menu2();
-		}while(!quit);
-	}
-	public static void printMenu1(){
-		System.out.println("Choose an option...");
-		System.out.println("0): Quit.");
-		System.out.println("1): Load Process List.");
-		System.out.println("2): Create New Process List.");
-	}
-	
-	public static boolean askToKeep(){
-		Scanner input = new Scanner(System.in);
-		boolean result = false;
-		System.out.println("Would you like to use this set of processes for another algorithm? (y/n): ");
-		char answer = input.next().toLowerCase().charAt(0);
-		switch(answer){
-		case 'y': {
-			result = true;
-			break;
-		}
-		case 'n': {
-			result = false;
-			break;
-		}
-		default:
-			break;
-		}
-		return result;
 	}
 	public static ArrayList<Process> copy(ArrayList<Process> origin){
 		ArrayList<Process> copy = new ArrayList<Process>();
