@@ -59,9 +59,9 @@ public class Scheduler {
 			//System.out.println("	Completion Time = "+p.getCompletionTime());
 		}
 	}
-	public int getNextArrivalTime(){
-		int time = pList.get(0).getArrivalTime();
-		for(Process p: pList){
+	public int getNextArrivalTime(ArrayList<Process> list){
+		int time = list.get(0).getArrivalTime();
+		for(Process p: list){
 			if (p.getArrivalTime()<time)
 				time = p.getArrivalTime();
 		}

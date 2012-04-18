@@ -44,13 +44,12 @@ public class ShortestJobFirst extends Scheduler{
 			readyQueue.add(p.deepCopy());
 		}
 		while (!readyQueue.isEmpty()) {
-			boolean idle = true;
+			boolean idle = false;
 			for (int i = 0; i < readyQueue.size(); i++) {
 				Process p = readyQueue.get(i);
 				if (p.getArrivalTime() <= elapsedBurst) {
 					System.out.print(elapsedBurst + "---[" + p.getName()
 							+ "]---");
-					idle = false;
 					p.setWaitTime(elapsedBurst - p.getArrivalTime());
 					totalWait += p.getWaitTime();
 					elapsedBurst += p.getBurst();
@@ -60,10 +59,12 @@ public class ShortestJobFirst extends Scheduler{
 					readyQueue.remove(p);
 					i--;
 				}
+				else
+					idle = true;
 			}
 			if (idle) {
 				System.out.print(elapsedBurst + "---[IDLE]---");
-				elapsedBurst = getNextArrivalTime();
+				elapsedBurst = getNextArrivalTime(readyQueue);
 			}
 		}
 		System.out.println(elapsedBurst);
