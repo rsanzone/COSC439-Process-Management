@@ -44,23 +44,28 @@ public class ShortestJobFirst extends Scheduler{
 			readyQueue.add(p.deepCopy());
 		}
 		while (!readyQueue.isEmpty()) {
-			boolean idle = false;
+			boolean idle = true;
 			for (int i = 0; i < readyQueue.size(); i++) {
-				Process p = readyQueue.get(i);
-				if (p.getArrivalTime() <= elapsedBurst) {
-					System.out.print(elapsedBurst + "---[" + p.getName()
-							+ "]---");
-					p.setWaitTime(elapsedBurst - p.getArrivalTime());
-					totalWait += p.getWaitTime();
-					elapsedBurst += p.getBurst();
-					totalComp += (elapsedBurst - p.getArrivalTime());
-					p.setCompletionTime(elapsedBurst - p.getArrivalTime());
-					pList.set(readyQueue.indexOf(p), p);
-					readyQueue.remove(p);
-					i--;
+				//only continue through the list if no job has been completed this pass
+				if(idle){
+					Process p = readyQueue.get(i);
+					if (p.getArrivalTime() <= elapsedBurst) {
+						idle = false;
+						System.out.print(elapsedBurst + "---[" + p.getName()
+								+ "]---");
+						p.setWaitTime(elapsedBurst - p.getArrivalTime());
+						totalWait += p.getWaitTime();
+						elapsedBurst += p.getBurst();
+						totalComp += (elapsedBurst - p.getArrivalTime());
+						p.setCompletionTime(elapsedBurst - p.getArrivalTime());
+						pList.set(readyQueue.indexOf(p), p);
+						readyQueue.remove(p);
+						i--;
+					}
+					else
+						idle = true;
 				}
-				else
-					idle = true;
+				
 			}
 			if (idle) {
 				System.out.print(elapsedBurst + "---[IDLE]---");
