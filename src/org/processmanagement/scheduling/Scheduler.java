@@ -55,6 +55,8 @@ public class Scheduler {
 			System.out.println(p.getName()+": ");
 			System.out.println("	Arrival Time = "+p.getArrivalTime());
 			System.out.println("	Burst Time = "+p.getBurst());
+			System.out.println("	Burst Segment = "+p.getBurstSegment());
+			System.out.println("	IO Segment = "+p.getIoSegment());
 			//System.out.println("	Wait Time = "+p.getWaitTime());
 			//System.out.println("	Completion Time = "+p.getCompletionTime());
 		}

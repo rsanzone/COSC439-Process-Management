@@ -4,10 +4,11 @@ package org.processmanagement.scheduling;
 import java.util.Collections;
 import java.util.Comparator;
 
+import org.processmanagement.processes.IOQueue;
 import org.processmanagement.processes.Process;
 
 public class FirstInFirstOut extends Scheduler {
-	
+	IOQueue ioQueue = new IOQueue();
 	/**
 	 * Sorting class to sort queue by arrival time
 	 */
@@ -38,22 +39,63 @@ public class FirstInFirstOut extends Scheduler {
 	}
 	public void fifo(){
 		int elapsedBurst = 0;
-		for(Process curProcess : readyQueue){
+		
+		while(!readyQueue.isEmpty()){
+			if(!ioQueue.getProcesses().isEmpty()){	
+				updateQueue(elapsedBurst);
+			}
+			Process curProcess = readyQueue.get(0);
+
 			if(curProcess.getArrivalTime()>elapsedBurst){
 				System.out.print(elapsedBurst + "---[IDLE]---");
 				elapsedBurst = curProcess.getArrivalTime();
 			}
-			System.out.print(elapsedBurst + "---[" + curProcess.getName() + "]---");
-			//set wait time
-			curProcess.setWaitTime(elapsedBurst - curProcess.getArrivalTime());
-			//update the elapsed
-			elapsedBurst += curProcess.getBurst();
-			//set completion time when process is done running
-			curProcess.setCompletionTime(elapsedBurst - curProcess.getArrivalTime());
+			if(curProcess.getRemainingBurst() <= curProcess.getBurstSegment()){ //job will finish
+
+				System.out.print(elapsedBurst + "---[" + curProcess.getName() + "]---");
+				int curWait = curProcess.getWaitTime() + (elapsedBurst - curProcess.getArrivalTime());
+				curProcess.setWaitTime(curWait);
+				elapsedBurst += curProcess.getRemainingBurst();
 			
-			totalWait += curProcess.getWaitTime();
-			totalComp += curProcess.getCompletionTime();
+				curProcess.setCompletionTime(elapsedBurst - curProcess.getInitialArrival());
+				curProcess.setRemainingBurst(0);
+				readyQueue.remove(curProcess);
+				
+				totalWait += curProcess.getWaitTime();
+				totalComp += curProcess.getCompletionTime();
+				
+			}
+			else{//job will not finish within the current burst segment
+
+				System.out.print(elapsedBurst + "---[" + curProcess.getName() + "]---");
+				int curWait = curProcess.getWaitTime() + (elapsedBurst - curProcess.getArrivalTime());
+				curProcess.setWaitTime(curWait);
+				elapsedBurst += curProcess.getBurstSegment();
+				curProcess.setRemainingBurst(curProcess.getRemainingBurst()-curProcess.getBurstSegment());
+				sendToIO(curProcess, elapsedBurst);
+				readyQueue.remove(curProcess);
+
+			}
+			
+
+			
+
+			
 		}
 		System.out.print(elapsedBurst);
 	}
+	public void updateQueue(int elapsedBurst){
+		ioQueue.calcIO(elapsedBurst);
+		Process p = ioQueue.getFinished().get(0);
+		if(p.getRemainingBurst() > 0)
+			readyQueue.add(p);
+		
+		sortQueue();
+	}
+	public void sendToIO(Process curProcess, int elapsedBurst){
+		ioQueue.addProcess(curProcess);
+		
+	}
+	
+
 }

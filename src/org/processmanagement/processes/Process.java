@@ -6,6 +6,7 @@ public class Process {
 	private int arrivalTime;
 	private String name;
 	//data only important for IO processes
+	private int initialArrival;
 	private int remainingBurst;
 	private int burstSegment; //burst time before going to IO
 	private int ioTime;//total time spent in IO
@@ -17,6 +18,7 @@ public class Process {
 	{
 		this.burst = 0;
 		this.arrivalTime = 0;
+		this.initialArrival = 0;
 		this.setBurstSegment(0);
 		this.setIoTime(0);
 		this.setIoSegment(0);
@@ -27,19 +29,21 @@ public class Process {
 		this.burst = burst;
 		this.remainingBurst = burst;
 		this.arrivalTime = arrivalTime;
+		this.initialArrival = arrivalTime;
 		this.setName(name);
 	}
-	Process(int burst, int arrivalTime, int burstSegment, int ioTime, int ioSegment, String name){
+	Process(int burst, int arrivalTime, int burstSegment,int remainingBurst, int ioTime, int ioSegment, String name){
 		this.burst = burst;
-		this.remainingBurst = burst;
+		this.remainingBurst = remainingBurst;
 		this.arrivalTime = arrivalTime;
+		this.initialArrival = arrivalTime;
 		this.setBurstSegment(burstSegment);
 		this.setIoTime(ioTime);
 		this.setIoSegment(ioSegment);
 		this.setName(name);
 	}
 	public Process deepCopy(){
-		Process copy = new Process(burst,arrivalTime,burstSegment,ioTime,ioSegment,name);
+		Process copy = new Process(burst,arrivalTime,burstSegment, remainingBurst,ioTime,ioSegment,name);
 		return copy;
 	}
 	
@@ -59,6 +63,15 @@ public class Process {
 	{
 		this.arrivalTime = arrivalTime;
 	}
+	public int getInitialArrival() 
+	{
+		return initialArrival;
+	}
+	public void setInitialArrival(int initialArrival) 
+	{
+		this.initialArrival = initialArrival;
+	}
+	
 	public int getWaitTime(){
 		return waitTime;
 	}

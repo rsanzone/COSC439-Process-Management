@@ -48,6 +48,7 @@ public class PRandom {
 		System.out.println(processNum+" processes have been generated!");
 		return processList;
 	}
+	/*
 	private Process randomProcess(int count){
 		
 		//set random data
@@ -62,18 +63,20 @@ public class PRandom {
 		return proc;
 				
 	}
-	private Process randomIOProcess(int count){
+	*/
+	private Process randomProcess(int count){
 		//set random data
 		//(int burst, int arrivalTime, int priority, int burstBeforeIO, int ioTime)
 		int burst = randomInt(0, 100);
 		int arrivalTime = randomInt(0, 10);
-		int burstSegment = randomInt(1, burst/5);//can't be larger than 1/5 the total burst
+		int burstSegment = randomInt(1, 20);//can't be larger than 1/5 the total burst
+		int remainingBurst = burst;
 		int ioTime = randomInt(1,5);//small maximum io time seems realistic
-		int ioSegment = randomInt(1, ioTime/5);//can't be larger than 1/5 the total IO time
+		int ioSegment = randomInt(1, 5);//can't be larger than 1/5 the total IO time
 		String name = "P"+count;
 		
 		//generate new process
-		Process proc = new Process(burst,arrivalTime,burstSegment,ioTime,ioSegment,name);
+		Process proc = new Process(burst,arrivalTime,burstSegment,remainingBurst,ioTime,ioSegment,name);
 		
 		//return the process
 		return proc;
