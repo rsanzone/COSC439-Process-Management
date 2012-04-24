@@ -15,16 +15,24 @@ public class IOQueue {
 		return processList;
 	}
 	public void calcIO(int elapsedBurst){
+		//make sure finished list is empty
 		finishedList.clear();
 		
+		/* TODO 
+		 * Not sure if a arraylist is needed here. It isn't for FIFO but not sure about the other 
+		 * algorithms. Currently the IO only works with one process at a time, hence using
+		 * index 0 to get the process. 
+		 * 
+		 * Leaving in place just in case for now
+		 */
 		Process curProcess = processList.get(0);
-		int IOTime = curProcess.getIoSegment();
-		curProcess.setArrivalTime(elapsedBurst + IOTime);
-		finishedList.add(curProcess);
+		
+		int IOTime = curProcess.getIoSegment();//get IO time
+		curProcess.setArrivalTime(elapsedBurst + IOTime);//calc the new arrival time for process using IOTime
+		
+		finishedList.add(curProcess);//add process to finishedList and remove form processList.
 		processList.remove(curProcess);
-		
-		
-		
+
 	}
 	public ArrayList<Process> getFinished(){
 		return finishedList;
