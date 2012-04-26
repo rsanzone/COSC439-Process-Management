@@ -1,6 +1,7 @@
 Current tasks 
-Ron: Working implementing IO queue to the current algorithms starting with First In First Out.
-	Making current algorithms preemptive if necessary.
-Matt: Working on XML File input and output and possible batch testing/comparison of algorithms.
-Joe: Developing GUI?
-Rachel: ?
+Ron: Working on updating Round Robin
+Matt: Updating sjf and xml
+Joe: Developing GUI
+Rachel: Working on Paper
+
+Anyone: update random algorithm for cpu bound/io bound processes

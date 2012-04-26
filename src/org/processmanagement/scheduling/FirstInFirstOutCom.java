@@ -79,7 +79,6 @@ public class FirstInFirstOutCom extends SchedulerCom {
 				curProcess.getBurst().remove(0);
 				
 				sendToIO(curProcess, elapsedBurst);//sent the process to the IOQueue
-				//make sure there is more than one element in the queue before removing
 			}
 			sortQueue();
 		
