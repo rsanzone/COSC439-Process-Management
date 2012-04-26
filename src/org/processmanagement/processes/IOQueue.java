@@ -28,6 +28,12 @@ public class IOQueue {
 		Process curProcess = processList.get(0);
 		
 		int IOTime = curProcess.getIoSegment();//get IO time
+		if(curProcess.getIoTime() >= IOTime){
+			curProcess.setIoTime(curProcess.getIoTime() - IOTime);
+		}
+		else{
+			curProcess.setIoTime(0);
+		}
 		curProcess.setArrivalTime(elapsedBurst + IOTime);//calc the new arrival time for process using IOTime
 		
 		finishedList.add(curProcess);//add process to finishedList and remove form processList.

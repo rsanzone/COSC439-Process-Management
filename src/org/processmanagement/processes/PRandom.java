@@ -71,7 +71,7 @@ public class PRandom {
 		int arrivalTime = randomInt(0, 10);
 		int burstSegment = randomInt(1, 20);//can't be larger than 1/5 the total burst
 		int remainingBurst = burst;
-		int ioTime = randomInt(1,5);//small maximum io time seems realistic
+		int ioTime = randomInt(1,50);//small maximum io time seems realistic
 		int ioSegment = randomInt(1, 5);//can't be larger than 1/5 the total IO time
 		String name = "P"+count;
 		

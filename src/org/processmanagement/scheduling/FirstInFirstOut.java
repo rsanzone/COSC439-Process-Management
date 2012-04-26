@@ -72,6 +72,9 @@ public class FirstInFirstOut extends Scheduler {
 				
 			}
 			else{//job will not finish within the current burst segment
+				if(curProcess.getIoTime() == 0){
+					curProcess.setBurstSegment(curProcess.getRemainingBurst());
+				}
 				System.out.print(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat
 				
 				int curWait = curProcess.getWaitTime() + (elapsedBurst - curProcess.getArrivalTime());//current segment wait
@@ -80,11 +83,13 @@ public class FirstInFirstOut extends Scheduler {
 				elapsedBurst += curProcess.getBurstSegment(); 
 				
 				curProcess.setRemainingBurst(curProcess.getRemainingBurst()-curProcess.getBurstSegment());
-				
-				sendToIO(curProcess, elapsedBurst);//sent the process to the IOQueue
-				//make sure there is more than one element in the queue before removing
+				if(curProcess.getIoTime() > 0){
+					sendToIO(curProcess, elapsedBurst);//sent the process to the IOQueue
+				}
+					//make sure there is more than one element in the queue before removing
 				if(readyQueue.size()>1)//this is to account for there only be one remaining process that has burst and IO left.
 					readyQueue.remove(curProcess);//remove process
+				
 
 			}
 		
