@@ -93,7 +93,7 @@ public class FirstInFirstOutCom extends SchedulerCom {
 			delay = freeAt - elapsedBurst;
 		}
 		curProcess.setArrivalTime(elapsedBurst+curProcess.getCurIoTime()+delay);
-		freeAt = curProcess.getArrivalTime();
+		freeAt += curProcess.getCurIoTime();
 		curProcess.getIoTime().remove(0);
 	}
 	
