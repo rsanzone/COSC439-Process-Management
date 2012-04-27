@@ -1,6 +1,7 @@
 package org.processmanagement;
 
 import org.processmanagement.scheduling.FirstInFirstOutCom;
+import org.processmanagement.scheduling.ShortestJobFirstCom;
 
 public class MainComplex {
 
@@ -8,7 +9,7 @@ public class MainComplex {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		FirstInFirstOutCom fifoTest = new FirstInFirstOutCom();
+		ShortestJobFirstCom fifoTest = new ShortestJobFirstCom();
 		fifoTest.genProcesses();
 		fifoTest.start();
 

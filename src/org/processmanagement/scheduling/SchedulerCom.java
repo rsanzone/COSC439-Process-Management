@@ -14,12 +14,18 @@ import org.processmanagement.processes.ProcessComplex;
  */
 public class SchedulerCom {
 	
+	
+	//Tools
+	PRandomComplex rand = new PRandomComplex();
+	FileManager manager = new FileManager();
+	int freeAt = 0;
+	
+	//List Variables
 	//processes will be taken from the process list and put into the ReadyQueue;
 	ArrayList<ProcessComplex> pList;
 	ArrayList<ProcessComplex> readyQueue = new ArrayList<ProcessComplex>();
-	PRandomComplex rand = new PRandomComplex();
-	FileManager manager = new FileManager();
 	
+	//stat related variables
 	int totalBurst = 0;
 	int totalWait = 0;
 	int totalComp = 0;
