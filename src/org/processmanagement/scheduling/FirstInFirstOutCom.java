@@ -9,7 +9,7 @@ import org.processmanagement.processes.Process;
 import org.processmanagement.processes.ProcessComplex;
 
 public class FirstInFirstOutCom extends SchedulerCom {
-	IOQueue ioQueue = new IOQueue();
+	
 	/**
 	 * Sorting class to sort queue by arrival time
 	 */
@@ -27,7 +27,7 @@ public class FirstInFirstOutCom extends SchedulerCom {
 	public void start(){
 		for(ProcessComplex p:pList){
 			readyQueue.add(p.deepCopy());
-			totalBurst += p.getNextBurst();
+			totalBurst += p.getCurBurst();
 		}
 		printProcesses();
 		size = pList.size();
@@ -57,7 +57,7 @@ public class FirstInFirstOutCom extends SchedulerCom {
 				int curWait = curProcess.getWaitTime() + (elapsedBurst - curProcess.getArrivalTime());
 				curProcess.setWaitTime(curWait);//update total wait time for process
 				
-				elapsedBurst += curProcess.getNextBurst();
+				elapsedBurst += curProcess.getCurBurst();
 			
 				curProcess.setCompletionTime(elapsedBurst - curProcess.getArrivalTime());
 				curProcess.getBurst().remove(0);
@@ -74,20 +74,26 @@ public class FirstInFirstOutCom extends SchedulerCom {
 				int curWait = curProcess.getWaitTime() + (elapsedBurst - curProcess.getArrivalTime());//current segment wait
 				curProcess.setWaitTime(curWait); //set total process wait
 			
-				elapsedBurst += curProcess.getNextBurst(); 
-				
+				elapsedBurst += curProcess.getCurBurst(); 
+				//stores the burst time just processed before removing it
+				int lastBurst = curProcess.getCurBurst();
 				curProcess.getBurst().remove(0);
 				
-				sendToIO(curProcess, elapsedBurst);//sent the process to the IOQueue
+				sendToIO(curProcess, elapsedBurst, lastBurst);//sent the process to the IOQueue
 			}
 			sortQueue();
 		
 		}
 		System.out.print(elapsedBurst);
 	}
-	
-	public void sendToIO(ProcessComplex curProcess, int elapsedBurst){
-		curProcess.setArrivalTime(elapsedBurst+curProcess.getNextIoTime());
+	//this method simulates the process being put through IO
+	public void sendToIO(ProcessComplex curProcess, int elapsedBurst, int lastBurst){
+		int delay = 0;
+		if(elapsedBurst<freeAt){//IO is not immediately available
+			delay = freeAt - elapsedBurst;
+		}
+		curProcess.setArrivalTime(elapsedBurst+curProcess.getCurIoTime()+delay);
+		freeAt += curProcess.getCurIoTime();
 		curProcess.getIoTime().remove(0);
 	}
 	

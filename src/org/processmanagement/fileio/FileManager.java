@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.processmanagement.processes.Process;
+import org.processmanagement.processes.ProcessComplex;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,7 +40,7 @@ public class FileManager {
 		      }
 		  }
 	}
-	public void savePList(ArrayList<Process> pList) {
+	public void savePList(ArrayList<ProcessComplex> pList) {
 		try {
 
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory
@@ -50,25 +51,40 @@ public class FileManager {
 			Document doc = docBuilder.newDocument();
 			Element rootElement = doc.createElement("ProcessList");
 			doc.appendChild(rootElement);
-			for (Process p : pList) {
+			for (ProcessComplex p : pList) {
 				// Process element
 				Element process = doc.createElement("Process");
 				rootElement.appendChild(process);
 
 				// name element
-				Element nickname = doc.createElement("name");
-				nickname.appendChild(doc.createTextNode(p.getName()));
-				process.appendChild(nickname);
+				Element name = doc.createElement("name");
+				name.appendChild(doc.createTextNode(p.getName()));
+				process.appendChild(name);
 				
-				// burst element
-				Element firstname = doc.createElement("burst");
-				firstname.appendChild(doc.createTextNode(""+p.getBurst()));
-				process.appendChild(firstname);
+				// burstList element
+				Element burstList = doc.createElement("burstList");
+				process.appendChild(burstList);
+				for (Integer b : p.getBurst()) {
+					// burst element
+					Element burst = doc.createElement("burst");
+					burst.appendChild(doc.createTextNode("" + b));
+					burstList.appendChild(burst);
+				}
+				
+				// ioList element
+				Element ioList = doc.createElement("ioList");
+				process.appendChild(ioList);
+				for (Integer i : p.getIoTime()) {
+					// burst element
+					Element ioTime = doc.createElement("ioTime");
+					ioTime.appendChild(doc.createTextNode("" + i));
+					ioList.appendChild(ioTime);
+				}
 
 				// arrival time element
-				Element lastname = doc.createElement("arrivalTime");
-				lastname.appendChild(doc.createTextNode(""+p.getArrivalTime()));
-				process.appendChild(lastname);
+				Element arrivalTime = doc.createElement("arrivalTime");
+				arrivalTime.appendChild(doc.createTextNode(""+p.getArrivalTime()));
+				process.appendChild(arrivalTime);
 
 				
 			}
