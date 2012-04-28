@@ -66,8 +66,10 @@ public class ShortestJobFirstCom extends SchedulerCom{
 
 			if(found){//there is a process to run
 				String n = interruptedBy(curProcess, elapsedBurst);
-				if(n.equals(curProcess.getName())){//the process will be able to run in it's entirety
-					if(curProcess.getBurst().size()==1){ //job will finish
+				
+				if(n.equals(curProcess.getName())){//the segment
+					
+					if(curProcess.getBurst().size()==1){ //job is on it's last segment and will finish
 		
 						System.out.print(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat section
 						//calc the current wait time for the current burst section of the process
@@ -76,7 +78,7 @@ public class ShortestJobFirstCom extends SchedulerCom{
 						
 						elapsedBurst += curProcess.getCurBurst();
 					
-						curProcess.setCompletionTime(elapsedBurst - curProcess.getArrivalTime());
+						curProcess.setCompletionTime(elapsedBurst - curProcess.getFArrivalTime());
 						curProcess.getBurst().remove(0);
 						readyQueue.remove(curProcess);//remove the process
 						

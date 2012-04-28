@@ -56,7 +56,10 @@ public class PRandomComplex {
 		int numSeg = randomInt(1, 10);
 		ArrayList<Integer> burst = new ArrayList<Integer>();
 		for(int i = 0;i<numSeg;i++){
-			burst.add(randomInt(1,25));
+			if(numSeg > 1)//IO bound process
+				burst.add(randomInt(1,25));
+			else//cpu bound process
+				burst.add(randomInt(50,500));
 		}
 		ArrayList<Integer> ioTime = new ArrayList<Integer>();
 		//there will be one less ioTime than burstTime
