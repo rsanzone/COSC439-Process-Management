@@ -69,7 +69,8 @@ private int quantum;
 							// updates the total wait time for the scheduler
 							totalWait += p.getWaitTime();
 							// updates the total completion time for the scheduler
-							totalComp += elapsedBurst;
+							p.setCompletionTime(elapsedBurst - p.getFArrivalTime());
+							totalComp += p.getCompletionTime();
 							// removes the process from the queue
 							readyQueue.remove(i);
 							i--;

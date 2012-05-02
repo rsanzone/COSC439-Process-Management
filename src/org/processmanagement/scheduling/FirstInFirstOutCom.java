@@ -59,7 +59,7 @@ public class FirstInFirstOutCom extends SchedulerCom {
 				
 				elapsedBurst += curProcess.getCurBurst();
 			
-				curProcess.setCompletionTime(elapsedBurst - curProcess.getArrivalTime());
+				curProcess.setCompletionTime(elapsedBurst - curProcess.getFArrivalTime());
 				curProcess.getBurst().remove(0);
 				readyQueue.remove(curProcess);//remove the process
 				
