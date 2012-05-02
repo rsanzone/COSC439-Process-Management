@@ -82,6 +82,7 @@ public class RoundRobin extends Scheduler {
 				System.out.print(elapsedBurst + "---[IDLE]---");
 				elapsedBurst = getNextArrivalTime(readyQueue);
 			}
+			
 		}
 		System.out.println(elapsedBurst);
 	}
