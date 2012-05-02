@@ -73,6 +73,7 @@ private int quantum;
 							// removes the process from the queue
 							readyQueue.remove(i);
 							i--;
+						
 						}else{
 							int lastBurst = p.getCurBurst();
 							p.getBurst().remove(0);
@@ -82,7 +83,7 @@ private int quantum;
 					}
 
 					else if (p.getCurBurst()> quantum) {//current burst segment will not be finished
-						// this pass
+														// this pass
 						int curWait = p.getWaitTime() + (elapsedBurst - p.getArrivalTime());
 						p.setWaitTime(curWait);//update total wait time for process
 
