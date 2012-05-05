@@ -33,7 +33,7 @@ public class ShortestJobFirst extends Scheduler{
 			totalBurst += b;
 			
 			}
-			readyQueue.add(p);
+			readyQueue.add(p.deepCopy());
 		}
 		
 		printProcesses();

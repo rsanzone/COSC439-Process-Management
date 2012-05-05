@@ -27,7 +27,7 @@ public class FirstInFirstOut extends Scheduler {
 			totalBurst += b;
 			
 			}
-			readyQueue.add(p);
+			readyQueue.add(p.deepCopy());
 		}
 		printProcesses();
 		size = pList.size();
