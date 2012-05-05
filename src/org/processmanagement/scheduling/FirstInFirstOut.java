@@ -23,8 +23,11 @@ public class FirstInFirstOut extends Scheduler {
 	 */			
 	public void start(){
 		for(Process p:pList){
-			readyQueue.add(p.deepCopy());
-			totalBurst += p.getCurBurst();
+			for(@SuppressWarnings("unused") Integer b:p.getBurst()){
+			totalBurst += b;
+			
+			}
+			readyQueue.add(p);
 		}
 		printProcesses();
 		size = pList.size();
@@ -73,10 +76,9 @@ public class FirstInFirstOut extends Scheduler {
 			
 				elapsedBurst += curProcess.getCurBurst(); 
 				//stores the burst time just processed before removing it
-				int lastBurst = curProcess.getCurBurst();
 				curProcess.getBurst().remove(0);
 				
-				sendToIO(curProcess, elapsedBurst, lastBurst);//sent the process to the IOQueue
+				sendToIO(curProcess, elapsedBurst);//sent the process to the IOQueue
 			}
 			sortQueue();
 		
@@ -84,7 +86,7 @@ public class FirstInFirstOut extends Scheduler {
 		System.out.print(elapsedBurst);
 	}
 	//this method simulates the process being put through IO
-	public void sendToIO(Process curProcess, int elapsedBurst, int lastBurst){
+	public void sendToIO(Process curProcess, int elapsedBurst){
 		int delay = 0;
 		if(elapsedBurst<freeAt){//IO is not immediately available
 			delay = freeAt - elapsedBurst;

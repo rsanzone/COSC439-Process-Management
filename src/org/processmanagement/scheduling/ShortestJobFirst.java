@@ -29,7 +29,7 @@ public class ShortestJobFirst extends Scheduler{
 	public void start(){
 		for(Process p:pList){
 			for(@SuppressWarnings("unused") Integer b:p.getBurst()){
-			totalBurst += p.getCurBurst();
+			totalBurst += b;
 			
 			}
 			readyQueue.add(p);
@@ -94,10 +94,9 @@ public class ShortestJobFirst extends Scheduler{
 					
 						elapsedBurst += curProcess.getCurBurst(); 
 						//stores the burst time just processed before removing it
-						int lastBurst = curProcess.getCurBurst();
 						curProcess.getBurst().remove(0);
 						
-						sendToIO(curProcess, elapsedBurst, lastBurst);//sent the process to the IOQueue
+						sendToIO(curProcess, elapsedBurst);//sent the process to the IOQueue
 					}
 				}
 				else{//process will be interrupted
@@ -117,7 +116,7 @@ public class ShortestJobFirst extends Scheduler{
 		System.out.print(elapsedBurst);
 	}
 	//this method simulates the process being put through IO
-	public void sendToIO(Process curProcess, int elapsedBurst, int lastBurst){
+	public void sendToIO(Process curProcess, int elapsedBurst){
 		int delay = 0;
 		if(elapsedBurst<freeAt){
 			delay = freeAt - elapsedBurst;
