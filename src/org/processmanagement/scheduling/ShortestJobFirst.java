@@ -26,7 +26,8 @@ public class ShortestJobFirst extends Scheduler{
 	/**
 	 * Method that starts the shortest job first scheduler simulation.
 	 */			
-	public void start(){
+	public String start(){
+            
 		for(Process p:pList){
 			for(@SuppressWarnings("unused") Integer b:p.getBurst()){
 			totalBurst += b;
@@ -40,12 +41,14 @@ public class ShortestJobFirst extends Scheduler{
 		readyQueue = sortQueue(readyQueue);//sorts the processList
 		System.out.println("Running Processes...");
 		//step through the queue and simulate the burst time for each process	
-		sjf();
-		printStats();
+		String finalStr=sjf();
+		return finalStr;
 	}
 
-	public void sjf() {
+	public String sjf() {
 		int elapsedBurst = 0;
+                String result = "";
+                int ctr=0;
 		Process curProcess = new Process();
 		
 		while(!readyQueue.isEmpty()){
@@ -70,7 +73,7 @@ public class ShortestJobFirst extends Scheduler{
 					
 					if(curProcess.getBurst().size()==1){ //job is on it's last segment and will finish
 		
-						System.out.print(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat section
+						result+=(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat section
 						//calc the current wait time for the current burst section of the process
 						int curWait = curProcess.getWaitTime() + (elapsedBurst - curProcess.getArrivalTime());
 						curProcess.setWaitTime(curWait);//update total wait time for process
@@ -87,7 +90,7 @@ public class ShortestJobFirst extends Scheduler{
 						
 					}
 					else{//job will not finish within the current burst segment
-						System.out.print(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat
+						result+=(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat
 						
 						int curWait = curProcess.getWaitTime() + (elapsedBurst - curProcess.getArrivalTime());//current segment wait
 						curProcess.setWaitTime(curWait); //set total process wait
@@ -101,19 +104,20 @@ public class ShortestJobFirst extends Scheduler{
 				}
 				else{//process will be interrupted
 					int stopTime = interruptedAt(n);
-					System.out.print(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat
+					result+=(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat
 					curProcess.decCurBurst(stopTime - elapsedBurst);
 					elapsedBurst = stopTime;
 					
 				}
 			}
 			else{
-				System.out.print(elapsedBurst + "---[IDLE]---");
+				result+=(elapsedBurst + "---[IDLE]---");
 				elapsedBurst = findNextArrivalTime();
 			}
 			
 		}
-		System.out.print(elapsedBurst);
+		result+=("Elapsed Burst = "+elapsedBurst);
+                return result;
 	}
 	//this method simulates the process being put through IO
 	public void sendToIO(Process curProcess, int elapsedBurst){

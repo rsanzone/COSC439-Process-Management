@@ -1,6 +1,7 @@
 package org.processmanagement.processes;
 
 import java.util.*;
+import javax.swing.JOptionPane;
 //import java.lang.Math;
 
 public class PRandom {
@@ -23,18 +24,16 @@ public class PRandom {
 		return randomNum;
 	}	
 
-	public ArrayList<Process> genProcesses() {
+	public ArrayList<Process> genProcesses(int num) {
 		// create a random num between 1 and MAX_PROCESS_NUMBER
-		System.out.println("How many processes should be generated?: ");
-		Scanner input = new Scanner(System.in);
-		int processNum = input.nextInt();
+		int processNum = num;
 		// int processNum = randomInt(1, MAX_PROCESS_NUMBER);
 		ArrayList<Process> processList = new ArrayList<Process>();
 		// populate a list with the generated number of processes
 		for (int i = 1; i <= processNum; i++) {
 			processList.add(randomProcess(i));
 		}
-		System.out.println(processNum+" processes have been generated!");
+		JOptionPane.showMessageDialog(null, processNum+" processes have been generated!", "Message", JOptionPane.INFORMATION_MESSAGE);
 		return processList;
 	}
 	public ArrayList<Process> genProcesses_randNum() {

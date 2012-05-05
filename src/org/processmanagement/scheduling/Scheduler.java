@@ -36,8 +36,8 @@ public class Scheduler {
 	/**
 	 * generate random processes for the queue
 	 */
-	public void genProcesses(){
-		pList = rand.genProcesses();
+	public void genProcesses(int num){
+		pList = rand.genProcesses(num);
 	}
 	/*public void saveProcesses(){
 		manager.savePList(pList);
@@ -48,22 +48,26 @@ public class Scheduler {
 	/**
 	 * Print out various stats calculated by the simulation.
 	 */
-	public void printStats(){
-		System.out.println();
-		System.out.println("------------------------------------------------------------");
-		System.out.println("Total Burst Time: " + totalBurst);
-		System.out.println("Average Burst Time: " + (float)(totalBurst/size));
-		System.out.println("Average Wait Time: " + (float)(totalWait/size));
-		System.out.println("Average Completion Time: " + (float)(totalComp/size));
+	public String printStats(){
+		String stats = "";
+		stats+=(" ");
+		stats+=("------------------------------------------------------------");
+		stats+=("\nTotal Burst Time: " + totalBurst);
+		stats+=("\nAverage Burst Time: " + (float)(totalBurst/size));
+		stats+=("\nAverage Wait Time: " + (float)(totalWait/size));
+		stats+=("\nAverage Completion Time: " + (float)(totalComp/size));
+		return stats;
 	}
-	public void printProcesses(){
+	public String printProcesses(){
+            String process="";
 		for(Process p:pList){
-			System.out.println(p.getName()+": ");
-			System.out.println("	Arrival Time = "+p.getArrivalTime());
+			process+=("\n"+p.getName()+": ");
+			process+=("	Arrival Time = "+p.getArrivalTime());
 			//will need to print out each index
-			System.out.println("	Burst Time = "+p.getBurst());
-			System.out.println("    IO Time = "+p.getIoTime());
+			process+=("	Burst Time = "+p.getBurst());
+			process+=("    IO Time = "+p.getIoTime());
 		}
+                return process;
 	}
 	public int getNextArrivalTime(ArrayList<Process> list){
 		int time = list.get(0).getArrivalTime();

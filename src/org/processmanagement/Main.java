@@ -48,7 +48,7 @@ public class Main {
 			}
 			case 2: {
 				PRandom random = new PRandom();
-				holder = copy(random.genProcesses());
+				//holder = copy(random.genProcesses());
 				System.out.println("Would you like to save this Process List? (y/n)");
 				char answer = input.next().toLowerCase().charAt(0);
 				if(answer == 'y'){

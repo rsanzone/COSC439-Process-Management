@@ -23,7 +23,7 @@ private int quantum;
 	/**
 	 * Method that starts the round robin scheduler simulation.
 	 */			
-	public void start(){
+	public String start(){
 		for(Process p:pList){
 			readyQueue.add(p.deepCopy());
 			for(int b : p.getBurst()){
@@ -34,12 +34,13 @@ private int quantum;
 		printProcesses();
 		sortQueue();
 		System.out.println("Running Processes...");
-		rr();
+		String finalStr=rr();
+                return finalStr;
 		//step through the queue and process each job for the specified time slice
-		printStats();
 	}
-	public void rr(){
+	public String rr(){
 		int elapsedBurst = 0;
+                String result = "";
 		// this process will continue to loop until all of the process have been
 		// completed
 		while (!readyQueue.isEmpty()) {
@@ -49,7 +50,7 @@ private int quantum;
 				Process p = readyQueue.get(i);
 				if (p.getArrivalTime() <= elapsedBurst) {
 					idle = false;
-					System.out.print(elapsedBurst + "---[" + p.getName()
+					result+=(elapsedBurst + "---[" + p.getName()
 							+ "]---");
 				
 					if(p.getCurBurst() <= quantum || readyQueue.size() == 1) {//current burst segment will finish or there is only one process left
@@ -93,12 +94,13 @@ private int quantum;
 				}
 			}
 			if(idle){
-				System.out.print(elapsedBurst + "---[IDLE]---");
+				result+=(elapsedBurst + "---[IDLE]---");
 				elapsedBurst = getNextArrivalTime(readyQueue);
 			}
 			sortQueue();
 		}
-		System.out.println(elapsedBurst);
+		result+=("Elapsed Burst = "+elapsedBurst);
+                return result;
 	}
 	
 	public int getQuantum() {

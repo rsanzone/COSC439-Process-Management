@@ -21,7 +21,7 @@ public class FirstInFirstOut extends Scheduler {
 	/**
 	 * Method that starts the first in first out scheduler simulation.
 	 */			
-	public void start(){
+	public String start(){
 		for(Process p:pList){
 			for(@SuppressWarnings("unused") Integer b:p.getBurst()){
 			totalBurst += b;
@@ -34,25 +34,27 @@ public class FirstInFirstOut extends Scheduler {
 		sortQueue();
 		System.out.println("Running Processes...");
 		//step through the queue and simulate the burst time for each process
-		fifo();
-		printStats();
+		String finalStr=fifo();
+                return finalStr;
 		
 	}
-	public void fifo(){
+	public String fifo(){
 		int elapsedBurst = 0;
-		
+		String result="";
+                int ctr=0;
 		while(!readyQueue.isEmpty()){
 			//get the first process in the queue
 			Process curProcess = readyQueue.get(0); //uses index 0 because processes will be continually removed
 													//so 0 will be next process
 
 			if(curProcess.getArrivalTime()>elapsedBurst){//find idle time
-				System.out.print(elapsedBurst + "---[IDLE]---");
+				result+=(elapsedBurst + "---[IDLE]---");
 				elapsedBurst = curProcess.getArrivalTime();
+                                ctr++;
 			}
 			if(curProcess.getBurst().size()==1){ //job will finish
 
-				System.out.print(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat section
+				result+=(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat section
 				//calc the current wait time for the current burst section of the process
 				int curWait = curProcess.getWaitTime() + (elapsedBurst - curProcess.getArrivalTime());
 				curProcess.setWaitTime(curWait);//update total wait time for process
@@ -66,10 +68,11 @@ public class FirstInFirstOut extends Scheduler {
 				//update totals
 				totalWait += curProcess.getWaitTime();
 				totalComp += curProcess.getCompletionTime();
+                                ctr++;
 				
 			}
 			else{//job will not finish within the current burst segment
-				System.out.print(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat
+				result+=(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat
 				
 				int curWait = curProcess.getWaitTime() + (elapsedBurst - curProcess.getArrivalTime());//current segment wait
 				curProcess.setWaitTime(curWait); //set total process wait
@@ -79,11 +82,14 @@ public class FirstInFirstOut extends Scheduler {
 				curProcess.getBurst().remove(0);
 				
 				sendToIO(curProcess, elapsedBurst);//sent the process to the IOQueue
+                                ctr++;
 			}
 			sortQueue();
+                        
 		
 		}
-		System.out.print(elapsedBurst);
+		result+=("\nElapsed Burst = "+elapsedBurst);
+                return result;
 	}
 	//this method simulates the process being put through IO
 	public void sendToIO(Process curProcess, int elapsedBurst){
