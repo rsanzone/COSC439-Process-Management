@@ -12,12 +12,18 @@ import org.processmanagement.processes.Process;
  */
 public class Scheduler {
 	
+	
+	//Tools
+	PRandom rand = new PRandom();
+	FileManager manager = new FileManager();
+	int freeAt = 0;
+	
+	//List Variables
 	//processes will be taken from the process list and put into the ReadyQueue;
 	ArrayList<Process> pList;
 	ArrayList<Process> readyQueue = new ArrayList<Process>();
-	PRandom rand = new PRandom();
-	FileManager manager = new FileManager();
 	
+	//stat related variables
 	int totalBurst = 0;
 	int totalWait = 0;
 	int totalComp = 0;
@@ -33,12 +39,12 @@ public class Scheduler {
 	public void genProcesses(){
 		pList = rand.genProcesses();
 	}
-	public void saveProcesses(){
+	/*public void saveProcesses(){
 		manager.savePList(pList);
 	}
 	public void genProcessesFromList(){
 		pList = manager.loadPList();
-	}
+	}*/
 	/**
 	 * Print out various stats calculated by the simulation.
 	 */
@@ -54,12 +60,9 @@ public class Scheduler {
 		for(Process p:pList){
 			System.out.println(p.getName()+": ");
 			System.out.println("	Arrival Time = "+p.getArrivalTime());
+			//will need to print out each index
 			System.out.println("	Burst Time = "+p.getBurst());
-			System.out.println("	Burst Segment = "+p.getBurstSegment());
-			System.out.println("	IO Segment = "+p.getIoSegment());
-			System.out.println("	IO Time = "+p.getIoTime());
-			//System.out.println("	Wait Time = "+p.getWaitTime());
-			//System.out.println("	Completion Time = "+p.getCompletionTime());
+			System.out.println("    IO Time = "+p.getIoTime());
 		}
 	}
 	public int getNextArrivalTime(ArrayList<Process> list){

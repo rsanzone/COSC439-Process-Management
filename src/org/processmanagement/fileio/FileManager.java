@@ -1,11 +1,12 @@
 package org.processmanagement.fileio;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.processmanagement.processes.Process;
-import org.processmanagement.processes.ProcessComplex;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,6 +21,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 public class FileManager {
 	public void printSavedLists(){
@@ -40,7 +42,7 @@ public class FileManager {
 		      }
 		  }
 	}
-	public void savePList(ArrayList<ProcessComplex> pList) {
+	public void savePList(ArrayList<Process> pList) {
 		try {
 
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory
@@ -51,7 +53,7 @@ public class FileManager {
 			Document doc = docBuilder.newDocument();
 			Element rootElement = doc.createElement("ProcessList");
 			doc.appendChild(rootElement);
-			for (ProcessComplex p : pList) {
+			for (Process p : pList) {
 				// Process element
 				Element process = doc.createElement("Process");
 				rootElement.appendChild(process);
@@ -122,28 +124,73 @@ public class FileManager {
 			printSavedLists();
 			System.out.print("Enter the name of the file you wish to load: ");
 			String fileName = input.nextLine();
+			if(!fileName.endsWith(".xml"))
+				fileName += ".xml";
 			File fXmlFile = new File("SavedLists\\"+fileName);
+			
+			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(fXmlFile);
 			doc.getDocumentElement().normalize();
+			
 	 
-			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 			NodeList nList = doc.getElementsByTagName("Process");
-			System.out.println("-----------------------");
 	 
 			for (int temp = 0; temp < nList.getLength(); temp++) {
-	 
 			   Node nNode = nList.item(temp);
 			   if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-	 
+				   
 			      Element eElement = (Element) nNode;
-		          pList.add(new Process(Integer.parseInt(getTagValue("arrivalTime", eElement)),Integer.parseInt(getTagValue("burst", eElement)),getTagValue("name", eElement)));
+			      //initialize arrivalTime
+			      Integer arrivalTime = Integer.parseInt(getTagValue("arrivalTime", eElement));
+			      //initialize name
+			      String name = getTagValue("name", eElement);
+			      
+			      //initialize burstList
+			      ArrayList<Integer> burstList = new ArrayList<Integer>();
+			      NodeList bList = eElement.getElementsByTagName("burst");
+			      
+			      //initialize ioList
+			      ArrayList<Integer> ioList = new ArrayList<Integer>();
+			      NodeList iList = eElement.getElementsByTagName("ioTime");
+			      
+			      testSegments(bList,iList);
+			      
+			      //populate the burstList
+			      for(int i = 0; i < bList.getLength();i++){
+			    	  Node bNode = bList.item(i);
+			    	  if(bNode.getNodeType() == Node.ELEMENT_NODE){
+			    		  Integer burst = Integer.parseInt(bNode.getFirstChild().getTextContent());
+			    		  burstList.add(burst);
+			    	  }
+			      }
+			      
+			      //populate the ioList
+			      for(int i = 0; i < iList.getLength();i++){
+			    	  Node iNode = iList.item(i);
+			    	  if(iNode.getNodeType() == Node.ELEMENT_NODE){
+			    		  Integer ioTime = Integer.parseInt(iNode.getFirstChild().getTextContent());
+			    		  ioList.add(ioTime);
+			    	  }
+			      }
+			      
+			      
+			      //create the process
+			      pList.add(new Process(burstList,arrivalTime,ioList,name));
 			   }
 			}
-		  } catch (Exception e) {
+		  } catch (FileNotFoundException e) {
+			System.err.print("The filename you entered is incorrect!");
+		  } catch (ParserConfigurationException e) {
 			e.printStackTrace();
-		  }
+		  } catch (SAXException e) {
+			e.printStackTrace();
+		  } catch (IOException e) {
+			e.printStackTrace();
+		  } catch (segmentException e) {
+			System.err.println("Wrong number of burst and io segments in xml file");
+		}
 		return pList;
 	}
 	private static String getTagValue(String sTag, Element eElement) {
@@ -153,5 +200,14 @@ public class FileManager {
 	 
 		return nValue.getNodeValue();
 	  }
+	public static void testSegments(NodeList bList, NodeList iList) throws segmentException{
+		int bLength = bList.getLength();
+		int iLength = iList.getLength();
+		if((bLength - iLength)!=1){
+			throw new segmentException();
+		}
+	}
+
+	
 
 }

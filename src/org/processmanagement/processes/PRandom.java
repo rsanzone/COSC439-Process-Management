@@ -48,35 +48,27 @@ public class PRandom {
 		System.out.println(processNum+" processes have been generated!");
 		return processList;
 	}
-	/*
 	private Process randomProcess(int count){
-		
 		//set random data
-		int burst = randomInt(0, 100);
 		int arrivalTime = randomInt(0, 10);
 		String name = "P"+count;
 		
-		//generate a new process
-		Process proc = new Process(burst, arrivalTime,name);
-		
-		//return the process
-		return proc;
-				
-	}
-	*/
-	private Process randomProcess(int count){
-		//set random data
-		//(int burst, int arrivalTime, int priority, int burstBeforeIO, int ioTime)
-		int burst = randomInt(0, 100);
-		int arrivalTime = randomInt(0, 10);
-		int burstSegment = randomInt(1, 20);//can't be larger than 1/5 the total burst
-		int remainingBurst = burst;
-		int ioTime = randomInt(1,50);//small maximum io time seems realistic
-		int ioSegment = randomInt(1, 5);//can't be larger than 1/5 the total IO time
-		String name = "P"+count;
+		int numSeg = randomInt(1, 10);
+		ArrayList<Integer> burst = new ArrayList<Integer>();
+		for(int i = 0;i<numSeg;i++){
+			if(numSeg > 1)//IO bound process
+				burst.add(randomInt(1,25));
+			else//cpu bound process
+				burst.add(randomInt(50,500));
+		}
+		ArrayList<Integer> ioTime = new ArrayList<Integer>();
+		//there will be one less ioTime than burstTime
+		for(int i = 1;i<numSeg;i++){
+			ioTime.add(randomInt(1,5));
+		}
 		
 		//generate new process
-		Process proc = new Process(burst,arrivalTime,burstSegment,remainingBurst,ioTime,ioSegment,name);
+		Process proc = new Process(burst,arrivalTime,ioTime,name);
 		
 		//return the process
 		return proc;

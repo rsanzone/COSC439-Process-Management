@@ -13,10 +13,11 @@ public class ShortestJobFirst extends Scheduler{
 	 */
 	private ArrayList<Process> sortQueue(ArrayList<Process> list){
 		
-		//java sort method with a comparator class to compare arrival times
+		//java sort method with a comparator class to compare next burst times
 		Collections.sort(list, new Comparator<Process>() {
+			@Override
 			public int compare(Process process1, Process process2) {
-				 return process1.getBurst() - process2.getBurst();
+				 return process1.getCurBurst() - process2.getCurBurst();
 			}
 		});
 		return list;
@@ -27,11 +28,16 @@ public class ShortestJobFirst extends Scheduler{
 	 */			
 	public void start(){
 		for(Process p:pList){
-			totalBurst += p.getBurst();
+			for(@SuppressWarnings("unused") Integer b:p.getBurst()){
+			totalBurst += p.getCurBurst();
+			
+			}
+			readyQueue.add(p);
 		}
+		
 		printProcesses();
 		size = pList.size();
-		pList = sortQueue(pList);//sorts the processList
+		readyQueue = sortQueue(readyQueue);//sorts the processList
 		System.out.println("Running Processes...");
 		//step through the queue and simulate the burst time for each process	
 		sjf();
@@ -40,40 +46,111 @@ public class ShortestJobFirst extends Scheduler{
 
 	public void sjf() {
 		int elapsedBurst = 0;
-		for (Process p : pList) {
-			readyQueue.add(p.deepCopy());
-		}
-		while (!readyQueue.isEmpty()) {
-			boolean idle = true;
-			for (int i = 0; i < readyQueue.size(); i++) {
-				//only continue through the list if no job has been completed this pass
-				if(idle){
-					Process p = readyQueue.get(i);
-					if (p.getArrivalTime() <= elapsedBurst) {
-						idle = false;
-						System.out.print(elapsedBurst + "---[" + p.getName()
-								+ "]---");
-						p.setWaitTime(elapsedBurst - p.getArrivalTime());
-						totalWait += p.getWaitTime();
-						elapsedBurst += p.getBurst();
-						totalComp += (elapsedBurst - p.getArrivalTime());
-						p.setCompletionTime(elapsedBurst - p.getArrivalTime());
-						pList.set(readyQueue.indexOf(p), p);
-						readyQueue.remove(p);
-						i--;
-					}
-					else
-						idle = true;
+		Process curProcess = new Process();
+		
+		while(!readyQueue.isEmpty()){
+			sortQueue(readyQueue);
+			
+			//get the first process in the queue that has arrived
+			int i = 0;
+			boolean found = false;
+			while(i<readyQueue.size()&&!found){
+				if(readyQueue.get(i).getArrivalTime()<=elapsedBurst){
+					curProcess = readyQueue.get(i);
+					found = true;
 				}
-				
+				i++;
 			}
-			if (idle) {
+			//end find first process in queue that has arrived
+
+			if(found){//there is a process to run
+				String n = interruptedBy(curProcess, elapsedBurst);
+				
+				if(n.equals(curProcess.getName())){//the segment
+					
+					if(curProcess.getBurst().size()==1){ //job is on it's last segment and will finish
+		
+						System.out.print(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat section
+						//calc the current wait time for the current burst section of the process
+						int curWait = curProcess.getWaitTime() + (elapsedBurst - curProcess.getArrivalTime());
+						curProcess.setWaitTime(curWait);//update total wait time for process
+						
+						elapsedBurst += curProcess.getCurBurst();
+					
+						curProcess.setCompletionTime(elapsedBurst - curProcess.getFArrivalTime());
+						curProcess.getBurst().remove(0);
+						readyQueue.remove(curProcess);//remove the process
+						
+						//update totals
+						totalWait += curProcess.getWaitTime();
+						totalComp += curProcess.getCompletionTime();
+						
+					}
+					else{//job will not finish within the current burst segment
+						System.out.print(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat
+						
+						int curWait = curProcess.getWaitTime() + (elapsedBurst - curProcess.getArrivalTime());//current segment wait
+						curProcess.setWaitTime(curWait); //set total process wait
+					
+						elapsedBurst += curProcess.getCurBurst(); 
+						//stores the burst time just processed before removing it
+						int lastBurst = curProcess.getCurBurst();
+						curProcess.getBurst().remove(0);
+						
+						sendToIO(curProcess, elapsedBurst, lastBurst);//sent the process to the IOQueue
+					}
+				}
+				else{//process will be interrupted
+					int stopTime = interruptedAt(n);
+					System.out.print(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat
+					curProcess.decCurBurst(stopTime - elapsedBurst);
+					elapsedBurst = stopTime;
+					
+				}
+			}
+			else{
 				System.out.print(elapsedBurst + "---[IDLE]---");
-				elapsedBurst = getNextArrivalTime(readyQueue);
+				elapsedBurst = findNextArrivalTime();
+			}
+			
+		}
+		System.out.print(elapsedBurst);
+	}
+	//this method simulates the process being put through IO
+	public void sendToIO(Process curProcess, int elapsedBurst, int lastBurst){
+		int delay = 0;
+		if(elapsedBurst<freeAt){
+			delay = freeAt - elapsedBurst;
+		}
+		curProcess.setArrivalTime(elapsedBurst+curProcess.getCurIoTime()+delay);
+		freeAt += curProcess.getCurIoTime();
+		curProcess.getIoTime().remove(0);
+	}
+	public int findNextArrivalTime(){
+		int nextTime = readyQueue.get(0).getArrivalTime();
+		for(Process p:readyQueue){
+			if(p.getArrivalTime()<nextTime)
+				nextTime = p.getArrivalTime();
+		}
+		return nextTime;
+	}
+	public String interruptedBy(Process curProcess, int elapsedBurst){
+		String result = curProcess.getName();
+		for(Process p:readyQueue){
+			if(p.getArrivalTime()<(elapsedBurst + curProcess.getCurBurst())&&p.getCurBurst()<curProcess.getCurBurst()){
+				result = p.getName();
 			}
 		}
-		System.out.println(elapsedBurst);
+		return result;
+		
 	}
-	
+	public int interruptedAt(String name){
+		for(Process p:readyQueue){
+			if(p.getName().equals(name)){
+				return p.getArrivalTime();
+			}
+		}
+		return 0;
+	}
 	
 }

@@ -1,59 +1,65 @@
 package org.processmanagement.processes;
 
+import java.util.ArrayList;
+
 public class Process {
 	//default important data
-	private int burst;
+	private ArrayList<Integer> burst = new ArrayList<Integer>();
 	private int arrivalTime;
+	private int fArrivalTime;
 	private String name;
-	//data only important for IO processes
-	private int initialArrival;
-	private int remainingBurst;
-	private int burstSegment; //burst time before going to IO
-	private int ioTime;//total time spent in IO
-	private int ioSegment;//time spent in IO before returning to ready queue
+	//total time spent in IO
+	private ArrayList<Integer> ioTime = new ArrayList<Integer>();
 	
 	private int waitTime = 0;
 	private int completionTime = 0;
-	Process()
+	private int totalBurst = 0;
+	public Process()
 	{
-		this.burst = 0;
+		burst = new ArrayList<Integer>();
+		ioTime = new ArrayList<Integer>();
 		this.arrivalTime = 0;
-		this.initialArrival = 0;
-		this.setBurstSegment(0);
-		this.setIoTime(0);
-		this.setIoSegment(0);
-		this.remainingBurst = 0;
+		this.name = null;
 	}
-	public Process(int burst,int arrivalTime,String name)
+	public Process(ArrayList<Integer> burst,int arrivalTime,String name)
 	{
-		this.burst = burst;
-		this.remainingBurst = burst;
+		for(Integer b:burst){
+			this.burst.add(b);
+			totalBurst += b;
+		}
 		this.arrivalTime = arrivalTime;
-		this.initialArrival = arrivalTime;
-		this.setName(name);
+		this.fArrivalTime = arrivalTime;
+		this.name = name;
 	}
-	Process(int burst, int arrivalTime, int burstSegment,int remainingBurst, int ioTime, int ioSegment, String name){
-		this.burst = burst;
-		this.remainingBurst = remainingBurst;
+	public Process(ArrayList<Integer> burst, int arrivalTime, ArrayList<Integer> ioTime, String name){
+		for(Integer b:burst){
+			this.burst.add(b);
+			totalBurst += b;
+		}
+		for(Integer i:ioTime){
+			this.ioTime.add(i);
+		}
 		this.arrivalTime = arrivalTime;
-		this.initialArrival = arrivalTime;
-		this.setBurstSegment(burstSegment);
-		this.setIoTime(ioTime);
-		this.setIoSegment(ioSegment);
-		this.setName(name);
+		this.fArrivalTime = arrivalTime;
+		this.name = name;
+		
 	}
 	public Process deepCopy(){
-		Process copy = new Process(burst,arrivalTime,burstSegment, remainingBurst,ioTime,ioSegment,name);
+		Process copy = new Process(burst,arrivalTime,ioTime,name);
 		return copy;
 	}
-	
-	public int getBurst() 
-	{
+	public ArrayList<Integer> getBurst(){
 		return burst;
 	}
-	public void setBurst(int burst) 
+	public Integer getCurBurst() 
 	{
-		this.burst = burst;
+		return burst.get(0);
+	}
+	public void setBurst(ArrayList<Integer> burst) 
+	{
+		for(Integer b:burst){
+			this.burst.add(b);
+		}
 	}
 	public int getArrivalTime() 
 	{
@@ -63,15 +69,6 @@ public class Process {
 	{
 		this.arrivalTime = arrivalTime;
 	}
-	public int getInitialArrival() 
-	{
-		return initialArrival;
-	}
-	public void setInitialArrival(int initialArrival) 
-	{
-		this.initialArrival = initialArrival;
-	}
-	
 	public int getWaitTime(){
 		return waitTime;
 	}
@@ -84,41 +81,34 @@ public class Process {
 	public void setCompletionTime(int completionTime){
 		this.completionTime = completionTime;
 	}
-	public int getRemainingBurst() {
-		return remainingBurst;
-	}
-	public void setRemainingBurst(int remainingBurst) {
-		this.remainingBurst = remainingBurst;
-	}
-	public void decRemainingBurst(int amount){
-		this.remainingBurst -= amount;
-	}
-	public int getElapsedBurst() {
-		return this.burst - this.remainingBurst;
-	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getBurstSegment() {
-		return burstSegment;
+	public ArrayList<Integer> getIoTime(){
+		return this.ioTime;
 	}
-	public void setBurstSegment(int burstSegment) {
-		this.burstSegment = burstSegment;
+	public Integer getCurIoTime() {
+		return ioTime.get(0);
 	}
-	public int getIoTime() {
-		return ioTime;
+	public void setIoTime(ArrayList<Integer> ioTime) {
+		for(Integer i:ioTime){
+			this.ioTime.add(i);
+		}
 	}
-	public void setIoTime(int ioTime) {
-		this.ioTime = ioTime;
+	public void decCurBurst(int amount){
+		burst.set(0, burst.get(0)-amount);
 	}
-	public int getIoSegment() {
-		return ioSegment;
+	public void decCurIo(){
+		ioTime.set(0, ioTime.get(0)-1);
 	}
-	public void setIoSegment(int ioSegment) {
-		this.ioSegment = ioSegment;
+	public int getTotalBurst(){
+		return totalBurst;
+	}
+	public int getFArrivalTime(){
+		return this.fArrivalTime;
 	}
 
 }
