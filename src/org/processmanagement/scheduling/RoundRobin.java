@@ -40,7 +40,8 @@ private int quantum;
 	}
 	public String rr(){
 		int elapsedBurst = 0;
-                String result = "";
+        String result = "";
+        int ctr = 1;
 		// this process will continue to loop until all of the process have been
 		// completed
 		while (!readyQueue.isEmpty()) {
@@ -50,8 +51,11 @@ private int quantum;
 				Process p = readyQueue.get(i);
 				if (p.getArrivalTime() <= elapsedBurst) {
 					idle = false;
+					if(ctr%10 ==1)
+						result+="\n";
 					result+=(elapsedBurst + "---[" + p.getName()
 							+ "]---");
+					ctr++;
 				
 					if(p.getCurBurst() <= quantum || readyQueue.size() == 1) {//current burst segment will finish or there is only one process left
 						
@@ -95,12 +99,15 @@ private int quantum;
 				}
 			}
 			if(idle){
+				if(ctr%10 ==1)
+					result+="\n";
 				result+=(elapsedBurst + "---[IDLE]---");
+				ctr++;
 				elapsedBurst = getNextArrivalTime(readyQueue);
 			}
 			sortQueue();
 		}
-		result+=(elapsedBurst+"\n Elapsed Burst" + elapsedBurst);
+		result+=(elapsedBurst+"\n Elapsed Burst " + elapsedBurst);
                 return result;
 	}
 	

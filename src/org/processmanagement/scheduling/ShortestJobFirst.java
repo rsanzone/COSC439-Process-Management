@@ -47,7 +47,8 @@ public class ShortestJobFirst extends Scheduler{
 
 	public String sjf() {
 		int elapsedBurst = 0;
-                String result = "";
+        String result = "";
+        int ctr = 1;
 		Process curProcess = new Process();
 		
 		while(!readyQueue.isEmpty()){
@@ -71,7 +72,8 @@ public class ShortestJobFirst extends Scheduler{
 				if(n.equals(curProcess.getName())){//the segment
 					
 					if(curProcess.getBurst().size()==1){ //job is on it's last segment and will finish
-		
+						if(ctr%10 ==1)
+							result+="\n";
 						result+=(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat section
 						//calc the current wait time for the current burst section of the process
 						int curWait = curProcess.getWaitTime() + (elapsedBurst - curProcess.getArrivalTime());
@@ -86,9 +88,12 @@ public class ShortestJobFirst extends Scheduler{
 						//update totals
 						totalWait += curProcess.getWaitTime();
 						totalComp += curProcess.getCompletionTime();
+						ctr++;
 						
 					}
 					else{//job will not finish within the current burst segment
+						if(ctr%10 ==1)
+							result+="\n";
 						result+=(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat
 						
 						int curWait = curProcess.getWaitTime() + (elapsedBurst - curProcess.getArrivalTime());//current segment wait
@@ -99,23 +104,30 @@ public class ShortestJobFirst extends Scheduler{
 						curProcess.getBurst().remove(0);
 						
 						sendToIO(curProcess, elapsedBurst);//sent the process to the IOQueue
+						ctr++;
 					}
 				}
 				else{//process will be interrupted
 					int stopTime = interruptedAt(n);
+					if(ctr%10 ==1)
+						result+="\n";
 					result+=(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat
 					curProcess.decCurBurst(stopTime - elapsedBurst);
 					elapsedBurst = stopTime;
+					ctr++;
 					
 				}
 			}
 			else{
+				if(ctr%10 ==1)
+					result+="\n";
+				ctr++;
 				result+=(elapsedBurst + "---[IDLE]---");
 				elapsedBurst = findNextArrivalTime();
 			}
 			
 		}
-		result+=(elapsedBurst+"\n Elapsed Burst" + elapsedBurst);
+		result+=(elapsedBurst+"\n Elapsed Burst " + elapsedBurst);
                 return result;
 	}
 	//this method simulates the process being put through IO

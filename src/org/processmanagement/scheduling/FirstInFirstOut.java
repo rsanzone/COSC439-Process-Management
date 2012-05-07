@@ -41,19 +41,22 @@ public class FirstInFirstOut extends Scheduler {
 	public String fifo(){
 		int elapsedBurst = 0;
 		String result="";
-                int ctr=0;
+        int ctr=1;
 		while(!readyQueue.isEmpty()){
 			//get the first process in the queue
 			Process curProcess = readyQueue.get(0); //uses index 0 because processes will be continually removed
 													//so 0 will be next process
 
 			if(curProcess.getArrivalTime()>elapsedBurst){//find idle time
+				if(ctr%10 ==1)
+					result+="\n";
 				result+=(elapsedBurst + "---[IDLE]---");
 				elapsedBurst = curProcess.getArrivalTime();
-                                ctr++;
+                ctr++;
 			}
 			if(curProcess.getBurst().size()==1){ //job will finish
-
+				if(ctr%10 ==1)
+					result+="\n";
 				result+=(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat section
 				//calc the current wait time for the current burst section of the process
 				int curWait = curProcess.getWaitTime() + (elapsedBurst - curProcess.getArrivalTime());
@@ -68,10 +71,12 @@ public class FirstInFirstOut extends Scheduler {
 				//update totals
 				totalWait += curProcess.getWaitTime();
 				totalComp += curProcess.getCompletionTime();
-                                ctr++;
+                ctr++;
 				
 			}
 			else{//job will not finish within the current burst segment
+				if(ctr%10 ==1)
+					result+="\n";
 				result+=(elapsedBurst + "---[" + curProcess.getName() + "]---");//print nat
 				
 				int curWait = curProcess.getWaitTime() + (elapsedBurst - curProcess.getArrivalTime());//current segment wait
@@ -82,13 +87,13 @@ public class FirstInFirstOut extends Scheduler {
 				curProcess.getBurst().remove(0);
 				
 				sendToIO(curProcess, elapsedBurst);//sent the process to the IOQueue
-                                ctr++;
+                ctr++;
 			}
 			sortQueue();
                         
 		
 		}
-		result+=(elapsedBurst+"\n Elapsed Burst" + elapsedBurst);
+		result+=(elapsedBurst+"\n Elapsed Burst " + elapsedBurst);
                 return result;
 	}
 	//this method simulates the process being put through IO
