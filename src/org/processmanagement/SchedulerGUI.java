@@ -17,11 +17,12 @@ import org.processmanagement.processes.Process;
  * @author Joe
  */
 public class SchedulerGUI extends javax.swing.JFrame {
-
+ArrayList<String> results = new ArrayList<String>();
     /**
      * Creates new form SchedulerGUI
      */
     public SchedulerGUI() {
+        
         initComponents();
     }
 
@@ -125,6 +126,7 @@ public class SchedulerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_numProcActionPerformed
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
+        
         String p = numProc.getText();
         Integer numProcess = null;
         ArrayList<Process> holder = new ArrayList<Process>();
@@ -139,13 +141,15 @@ public class SchedulerGUI extends javax.swing.JFrame {
                         case 0: {
                                 FirstInFirstOut fifoTest = new FirstInFirstOut();
                                 fifoTest.setPList(copy(holder));
-                                resultsArea.setText(fifoTest.start()+"\n"+fifoTest.printStats()+"\n"+fifoTest.printProcesses());
+                                results.add(fifoTest.start()+"\n"+fifoTest.printStats()+"\n"+fifoTest.printProcesses());
+                                printResults(results);
 				break;
 			}
 			case 1: {
 				ShortestJobFirst sjfTest = new ShortestJobFirst();
 				sjfTest.setPList(copy(holder));
-				resultsArea.setText(sjfTest.start()+"\n"+sjfTest.printStats()+"\n"+sjfTest.printProcesses());
+				results.add(sjfTest.start()+"\n"+sjfTest.printStats()+"\n"+sjfTest.printProcesses());
+                                printResults(results);
 				break;
 			}
 			case 2: {
@@ -154,7 +158,8 @@ public class SchedulerGUI extends javax.swing.JFrame {
 
 				RoundRobin rrTest = new RoundRobin(quantum);
 				rrTest.setPList(copy(holder));
-				resultsArea.setText(rrTest.start()+"\n"+rrTest.printStats()+"\n"+rrTest.printProcesses());
+				results.add(rrTest.start()+"\n"+rrTest.printStats()+"\n"+rrTest.printProcesses());
+                                printResults(results);
 				break;
 
 			}
@@ -168,7 +173,6 @@ public class SchedulerGUI extends javax.swing.JFrame {
         }catch(NumberFormatException e){
             JOptionPane.showMessageDialog(null, "Please enter a valid integer!", "alert", JOptionPane.ERROR_MESSAGE);
         }
-        
     }//GEN-LAST:event_runButtonActionPerformed
 
     /**
@@ -230,4 +234,11 @@ public static ArrayList<Process> copy(ArrayList<Process> origin){
 		}
 		return copy;
 	}
+public void printResults(ArrayList<String> data){
+    String finalResult = "";
+    for(int i=0;i<data.size();i++)
+        finalResult+=("\n"+"Simulation Number: "+(i+1)+"-----------------------------------------------------------------------------------"
+                + "\n"+data.get(i));
+    resultsArea.setText(finalResult);
+}
 }
