@@ -29,7 +29,7 @@ public class ShortestJobFirst extends Scheduler{
 	public String start(){
             
 		for(Process p:pList){
-			for(@SuppressWarnings("unused") Integer b:p.getBurst()){
+			for(Integer b:p.getBurst()){
 			totalBurst += b;
 			
 			}
@@ -48,7 +48,6 @@ public class ShortestJobFirst extends Scheduler{
 	public String sjf() {
 		int elapsedBurst = 0;
                 String result = "";
-                int ctr=0;
 		Process curProcess = new Process();
 		
 		while(!readyQueue.isEmpty()){
@@ -116,7 +115,7 @@ public class ShortestJobFirst extends Scheduler{
 			}
 			
 		}
-		result+=("Elapsed Burst = "+elapsedBurst);
+		result+=(elapsedBurst+"\n Elapsed Burst" + elapsedBurst);
                 return result;
 	}
 	//this method simulates the process being put through IO

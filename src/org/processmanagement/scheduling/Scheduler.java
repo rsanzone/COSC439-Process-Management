@@ -39,25 +39,24 @@ public class Scheduler {
 	public void genProcesses(int num){
 		pList = rand.genProcesses(num);
 	}
-	/*public void saveProcesses(){
+	public void saveProcesses(){
 		manager.savePList(pList);
 	}
 	public void genProcessesFromList(){
 		pList = manager.loadPList();
-	}*/
+	}
 	/**
 	 * Print out various stats calculated by the simulation.
 	 */
 	public String printStats(){
-		String stats = "";
-		stats+=(" ");
-		stats+=("------------------------------------------------------------");
-		stats+=("\nTotal Burst Time: " + totalBurst);
-		stats+=("\nAverage Burst Time: " + (float)(totalBurst/size));
-		stats+=("\nAverage Wait Time: " + (float)(totalWait/size));
-		stats+=("\nAverage Completion Time: " + (float)(totalComp/size));
-		return stats;
-	}
+		String result = "\n";
+		result += "------------------------------------------------------------\n";
+		result += "Total Burst Time: " + totalBurst+"\n";
+		result += "Average Burst Time: " + (float)(totalBurst/size)+"\n";
+		result += "Average Wait Time: " + ((float)totalWait/(float)size)+"\n";
+		result += "Average Completion Time: " + ((float)totalComp/(float)size)+"\n";
+		return result;
+}
 	public String printProcesses(){
             String process="";
 		for(Process p:pList){

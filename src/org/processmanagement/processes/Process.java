@@ -14,6 +14,7 @@ public class Process {
 	private int waitTime = 0;
 	private int completionTime = 0;
 	private int totalBurst = 0;
+	private int originCurBurst;
 	public Process()
 	{
 		burst = new ArrayList<Integer>();
@@ -42,6 +43,7 @@ public class Process {
 		this.arrivalTime = arrivalTime;
 		this.fArrivalTime = arrivalTime;
 		this.name = name;
+		this.setOriginCurBurst(this.getCurBurst());
 		
 	}
 	public Process deepCopy(){
@@ -109,6 +111,12 @@ public class Process {
 	}
 	public int getFArrivalTime(){
 		return this.fArrivalTime;
+	}
+	public int getOriginCurBurst() {
+		return originCurBurst;
+	}
+	public void setOriginCurBurst(int originCurBurst) {
+		this.originCurBurst = originCurBurst;
 	}
 
 }

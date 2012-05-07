@@ -56,7 +56,7 @@ private int quantum;
 					if(p.getCurBurst() <= quantum || readyQueue.size() == 1) {//current burst segment will finish or there is only one process left
 						
 						// update the wait time for the process
-						int curWait = p.getWaitTime() + (elapsedBurst - p.getArrivalTime());
+						int curWait = p.getWaitTime() + (elapsedBurst - p.getArrivalTime() - (p.getOriginCurBurst() - p.getCurBurst()));
 						p.setWaitTime(curWait);//update total wait time for process
 						
 						// updates the current elapsed burst time
@@ -77,6 +77,7 @@ private int quantum;
 						}else{
 							int lastBurst = p.getCurBurst();
 							p.getBurst().remove(0);
+							p.setOriginCurBurst(p.getCurBurst());
 							
 							sendToIO(p, elapsedBurst, lastBurst);//sent the process to the IOQueue
 						}
@@ -84,7 +85,7 @@ private int quantum;
 
 					else if (p.getCurBurst()> quantum) {//current burst segment will not be finished
 														// this pass
-						int curWait = p.getWaitTime() + (elapsedBurst - p.getArrivalTime());
+						int curWait = p.getWaitTime() + (elapsedBurst - p.getArrivalTime() - (p.getOriginCurBurst() - p.getCurBurst()));
 						p.setWaitTime(curWait);//update total wait time for process
 
 						elapsedBurst += quantum;
@@ -99,7 +100,7 @@ private int quantum;
 			}
 			sortQueue();
 		}
-		result+=("Elapsed Burst = "+elapsedBurst);
+		result+=(elapsedBurst+"\n Elapsed Burst" + elapsedBurst);
                 return result;
 	}
 	

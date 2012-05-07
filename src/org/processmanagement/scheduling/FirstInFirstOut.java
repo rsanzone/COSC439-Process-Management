@@ -23,7 +23,7 @@ public class FirstInFirstOut extends Scheduler {
 	 */			
 	public String start(){
 		for(Process p:pList){
-			for(@SuppressWarnings("unused") Integer b:p.getBurst()){
+			for(Integer b:p.getBurst()){
 			totalBurst += b;
 			
 			}
@@ -88,7 +88,7 @@ public class FirstInFirstOut extends Scheduler {
                         
 		
 		}
-		result+=("\nElapsed Burst = "+elapsedBurst);
+		result+=(elapsedBurst+"\n Elapsed Burst" + elapsedBurst);
                 return result;
 	}
 	//this method simulates the process being put through IO
