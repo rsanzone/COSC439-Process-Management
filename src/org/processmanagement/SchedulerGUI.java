@@ -166,6 +166,7 @@ ArrayList<String> results = new ArrayList<String>();
     }//GEN-LAST:event_numProcActionPerformed
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
+        //initialize
         String fileNam;
         String p = numProc.getText();
         Integer numProcess = null;
