@@ -42,7 +42,7 @@ public class FileManager {
 		      }
 		  }
 	}
-	public void savePList(ArrayList<Process> pList) {
+	public void savePList(ArrayList<Process> pList, String n) {
 		try {
 
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory
@@ -95,9 +95,7 @@ public class FileManager {
 					.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
-			System.out.print("Enter the desired file name: ");
-			Scanner input = new Scanner(System.in);
-			String fileName = input.nextLine();
+			String fileName = n;
 			if(!fileName.endsWith(".xml"))
 				fileName += ".xml";
 			StreamResult result = new StreamResult(new File("SavedLists\\"+fileName));
@@ -107,7 +105,6 @@ public class FileManager {
 
 			transformer.transform(source, result);
 
-			System.out.println("File saved!");
 
 		} catch (ParserConfigurationException pce) {
 			pce.printStackTrace();

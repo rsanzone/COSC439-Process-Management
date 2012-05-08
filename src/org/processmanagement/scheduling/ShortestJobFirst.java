@@ -39,7 +39,6 @@ public class ShortestJobFirst extends Scheduler{
 		printProcesses();
 		size = pList.size();
 		readyQueue = sortQueue(readyQueue);//sorts the processList
-		System.out.println("Running Processes...");
 		//step through the queue and simulate the burst time for each process	
 		String finalStr=sjf();
 		return finalStr;

@@ -39,8 +39,8 @@ public class Scheduler {
 	public void genProcesses(int num){
 		pList = rand.genProcesses(num);
 	}
-	public void saveProcesses(){
-		manager.savePList(pList);
+	public void saveProcesses(String n){
+		manager.savePList(pList, n);
 	}
 	public void genProcessesFromList(){
 		pList = manager.loadPList();

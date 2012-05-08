@@ -32,7 +32,6 @@ public class FirstInFirstOut extends Scheduler {
 		printProcesses();
 		size = pList.size();
 		sortQueue();
-		System.out.println("Running Processes...");
 		//step through the queue and simulate the burst time for each process
 		String finalStr=fifo();
                 return finalStr;

@@ -48,12 +48,12 @@ public class Main {
 			}
 			case 2: {
 				PRandom random = new PRandom();
-				//holder = copy(random.genProcesses());
+				holder = copy(random.genProcesses(5));
 				System.out.println("Would you like to save this Process List? (y/n)");
 				char answer = input.next().toLowerCase().charAt(0);
 				if(answer == 'y'){
 					FileManager manager = new FileManager();
-					manager.savePList(holder);
+					//manager.savePList(holder);
 				}
 				break;
 			}

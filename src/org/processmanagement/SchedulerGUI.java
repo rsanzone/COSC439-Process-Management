@@ -6,6 +6,7 @@ package org.processmanagement;
 
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import org.processmanagement.fileio.FileManager;
 import org.processmanagement.processes.PRandom;
 import org.processmanagement.scheduling.FirstInFirstOut;
 import org.processmanagement.scheduling.RoundRobin;
@@ -43,6 +44,12 @@ ArrayList<String> results = new ArrayList<String>();
         runButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         resultsArea = new javax.swing.JTextArea();
+        savList = new javax.swing.JCheckBox();
+        savName = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,28 +77,51 @@ ArrayList<String> results = new ArrayList<String>();
         resultsArea.setRows(5);
         jScrollPane1.setViewportView(resultsArea);
 
+        savList.setText("Save Process List?");
+        savList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                savListActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Desired file name");
+
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jScrollPane1)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(runButton))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(optionsBox, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(124, 124, 124)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(numProc, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 475, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(runButton)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(optionsBox, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1))
+                                .addGap(124, 124, 124)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(numProc, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(savName, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(savList, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 475, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addComponent(jScrollPane1)
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, optionsBox});
@@ -109,12 +139,22 @@ ArrayList<String> results = new ArrayList<String>();
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
-                .addGap(90, 90, 90)
-                .addComponent(runButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(90, 90, 90)
+                        .addComponent(runButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(savList)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(savName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addGap(27, 27, 27)))
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -126,17 +166,34 @@ ArrayList<String> results = new ArrayList<String>();
     }//GEN-LAST:event_numProcActionPerformed
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
-        
+        String fileNam;
         String p = numProc.getText();
         Integer numProcess = null;
         ArrayList<Process> holder = new ArrayList<Process>();
         PRandom random = new PRandom();
         
+        //Get selected option
         int selection = optionsBox.getSelectedIndex();
+        
+        
         try{
             numProcess = Integer.valueOf(p);
             holder = copy(random.genProcesses(numProcess));                      
         do{
+        //Check to see if user wants list saved
+        if(savList.isSelected()){
+            FileManager manager = new FileManager();
+            if (!savName.getText().isEmpty()){
+                fileNam = savName.getText();
+                manager.savePList(holder, fileNam);
+            }
+            else{
+                fileNam = JOptionPane.showInputDialog("File name was left blank! \nPlease enter a file name.");
+                manager.savePList(holder, fileNam);
+            }
+        }
+        savList.setSelected(false);
+        savName.setText("File Saved!");
             switch (selection){
                         case 0: {
                                 FirstInFirstOut fifoTest = new FirstInFirstOut();
@@ -174,6 +231,10 @@ ArrayList<String> results = new ArrayList<String>();
             JOptionPane.showMessageDialog(null, "Please enter a valid integer!", "alert", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_runButtonActionPerformed
+
+    private void savListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savListActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_savListActionPerformed
 
     /**
      * @param args the command line arguments
@@ -219,12 +280,18 @@ ArrayList<String> results = new ArrayList<String>();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField numProc;
     private javax.swing.JComboBox optionsBox;
     private javax.swing.JTextArea resultsArea;
     private javax.swing.JButton runButton;
+    private javax.swing.JCheckBox savList;
+    private javax.swing.JTextField savName;
     // End of variables declaration//GEN-END:variables
 
 public static ArrayList<Process> copy(ArrayList<Process> origin){
@@ -237,7 +304,7 @@ public static ArrayList<Process> copy(ArrayList<Process> origin){
 public void printResults(ArrayList<String> data){
     String finalResult = "";
     for(int i=0;i<data.size();i++)
-        finalResult+=("\n"+"Simulation Number: "+(i+1)+"-----------------------------------------------------------------------------------"
+        finalResult+=("\n"+"\nSimulation Number: "+(i+1)+"\n-----------------------------------------------------------------------------------"
                 + "\n"+data.get(i));
     resultsArea.setText(finalResult);
 }

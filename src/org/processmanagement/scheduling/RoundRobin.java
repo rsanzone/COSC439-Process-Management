@@ -33,7 +33,6 @@ private int quantum;
 		size = pList.size();
 		printProcesses();
 		sortQueue();
-		System.out.println("Running Processes...");
 		String finalStr=rr();
                 return finalStr;
 		//step through the queue and process each job for the specified time slice
