@@ -45,8 +45,7 @@ public class PRandom {
 		for (int i = 1; i <= processNum; i++) {
 			processList.add(randomProcess(i));
 		}
-		allProc+=("\n"+processNum+" processes have been generated!");
-                JOptionPane.showMessageDialog(null, allProc, "Message", JOptionPane.INFORMATION_MESSAGE);
+		System.out.println(+processNum+" processes have been generated!");
 		return processList;
 	}
 	private Process randomProcess(int count){
