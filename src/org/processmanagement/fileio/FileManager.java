@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 import org.processmanagement.processes.Process;
 
@@ -24,10 +25,10 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class FileManager {
-	public void printSavedLists(){
+	public String printSavedLists(){
 		
 		  String path = "SavedLists"; 
-		 
+                  String list = "";
 		  String files;
 		  File folder = new File(path);
 		  File[] listOfFiles = folder.listFiles(); 
@@ -38,9 +39,10 @@ public class FileManager {
 		   if (listOfFiles[i].isFile()) 
 		   {
 		   files = listOfFiles[i].getName();
-		   System.out.println(files);
+		   list+=("\n"+files);
 		      }
 		  }
+                  return list;
 	}
 	public void savePList(ArrayList<Process> pList, String n) {
 		try {
@@ -117,10 +119,8 @@ public class FileManager {
 		ArrayList<Process> pList = new ArrayList<Process>();
 		try {
 			Scanner input = new Scanner(System.in);
-			System.out.println("Available saved lists are: ");
-			printSavedLists();
-			System.out.print("Enter the name of the file you wish to load: ");
-			String fileName = input.nextLine();
+			String listChoice = JOptionPane.showInputDialog("Available Lists are: "+"\n"+printSavedLists()+"\nEnter the name of the file you wish to load");
+			String fileName = listChoice;
 			if(!fileName.endsWith(".xml"))
 				fileName += ".xml";
 			File fXmlFile = new File("SavedLists\\"+fileName);
@@ -178,7 +178,7 @@ public class FileManager {
 			   }
 			}
 		  } catch (FileNotFoundException e) {
-			System.err.print("The filename you entered is incorrect!");
+			JOptionPane.showMessageDialog(null, "The Filename you entered is incorrect.", "Error", JOptionPane.ERROR_MESSAGE);
 		  } catch (ParserConfigurationException e) {
 			e.printStackTrace();
 		  } catch (SAXException e) {
@@ -186,7 +186,7 @@ public class FileManager {
 		  } catch (IOException e) {
 			e.printStackTrace();
 		  } catch (segmentException e) {
-			System.err.println("Wrong number of burst and io segments in xml file");
+                        JOptionPane.showMessageDialog(null, "Wrong number of burst and io segments in xml file", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		return pList;
 	}

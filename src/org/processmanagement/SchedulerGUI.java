@@ -19,6 +19,7 @@ import org.processmanagement.processes.Process;
  */
 public class SchedulerGUI extends javax.swing.JFrame {
 ArrayList<String> results = new ArrayList<String>();
+ArrayList<Process> loadedPList = new ArrayList<Process>();
     /**
      * Creates new form SchedulerGUI
      */
@@ -49,7 +50,9 @@ ArrayList<String> results = new ArrayList<String>();
         jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        menuBatch = new javax.swing.JMenuItem();
+        loadList = new javax.swing.JMenuItem();
+        useSavBox = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,10 +90,27 @@ ArrayList<String> results = new ArrayList<String>();
         jLabel3.setText("Desired file name");
 
         jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        menuBatch.setText("Run Large Batch Coparison");
+        menuBatch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuBatchActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuBatch);
+
+        loadList.setText("Load Saved List");
+        loadList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadListActionPerformed(evt);
+            }
+        });
+        jMenu1.add(loadList);
+
+        useSavBox.setText("Use Saved List?");
+        jMenu1.add(useSavBox);
+
+        jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
 
@@ -178,8 +198,14 @@ ArrayList<String> results = new ArrayList<String>();
         
         
         try{
+            if (useSavBox.isSelected()){
+                numProcess=0;
+                holder = copy(loadedPList);
+            }
+            else{
             numProcess = Integer.valueOf(p);
-            holder = copy(random.genProcesses(numProcess));                      
+            holder = copy(random.genProcesses(numProcess));
+            }
         do{
         //Check to see if user wants list saved
         if(savList.isSelected()){
@@ -187,14 +213,15 @@ ArrayList<String> results = new ArrayList<String>();
             if (!savName.getText().isEmpty()){
                 fileNam = savName.getText();
                 manager.savePList(holder, fileNam);
+                savName.setText("File Saved!");
             }
             else{
                 fileNam = JOptionPane.showInputDialog("File name was left blank! \nPlease enter a file name.");
                 manager.savePList(holder, fileNam);
+                savName.setText("File Saved!");
             }
         }
         savList.setSelected(false);
-        savName.setText("File Saved!");
             switch (selection){
                         case 0: {
                                 FirstInFirstOut fifoTest = new FirstInFirstOut();
@@ -229,13 +256,59 @@ ArrayList<String> results = new ArrayList<String>();
 
         }while(selection!=selection);
         }catch(NumberFormatException e){
-            JOptionPane.showMessageDialog(null, "Please enter a valid integer!", "alert", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Please enter a valid integer!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_runButtonActionPerformed
 
     private void savListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savListActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_savListActionPerformed
+
+    private void loadListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadListActionPerformed
+        useSavBox.setSelected(true);
+        FileManager manager = new FileManager();
+        loadedPList = manager.loadPList();       
+    }//GEN-LAST:event_loadListActionPerformed
+
+    private void menuBatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBatchActionPerformed
+				float fifoWaitTime = 0;
+				float fifoCompTime = 0;
+				float sjfWaitTime = 0;
+				float sjfCompTime = 0;
+				float rrWaitTime = 0;
+				float rrCompTime = 0;
+                                String finalResult = "";
+				
+				PRandom random = new PRandom();
+				String numSim = JOptionPane.showInputDialog("How many simulations would you like to run?");
+				int num = Integer.parseInt(numSim);
+				for(int i = 0;i<num;i++){
+					ArrayList<Process> list = random.genProcesses_randNum();
+					
+					FirstInFirstOut fifo = new FirstInFirstOut();
+					fifo.setPList(copy(list));
+					fifo.start();
+					fifoWaitTime += fifo.getTotalWaitTime()/fifo.getSize();
+					fifoCompTime += fifo.getTotalCompTime()/fifo.getSize();
+					
+					ShortestJobFirst sjf = new ShortestJobFirst();
+					sjf.setPList(copy(list));
+					sjf.start();
+					sjfWaitTime += sjf.getTotalWaitTime()/sjf.getSize();
+					sjfCompTime += sjf.getTotalCompTime()/sjf.getSize();
+					
+					RoundRobin rr = new RoundRobin(random.randomInt(1, 20));
+					rr.setPList(copy(list));
+					rr.start();
+					rrWaitTime += rr.getTotalWaitTime()/rr.getSize();
+					rrCompTime += rr.getTotalCompTime()/rr.getSize();
+				}
+				finalResult+=("After "+num+" simulations, the stats were as follows: ");
+				finalResult+=("\n\nFirst In First Out: Avg Wait Time = "+fifoWaitTime/num+" Avg Turnaround Time = "+fifoCompTime/num);
+				finalResult+=("\n\nShortest Job First: Avg Wait Time = "+sjfWaitTime/num+" Avg Turnaround Time = "+sjfCompTime/num);
+				finalResult+=("\n\nRound Robin:        Avg Wait Time = "+rrWaitTime/num+" Avg Turnaround Time = "+rrCompTime/num);
+                                resultsArea.setText(finalResult);
+    }//GEN-LAST:event_menuBatchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -283,16 +356,18 @@ ArrayList<String> results = new ArrayList<String>();
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JMenuItem loadList;
+    private javax.swing.JMenuItem menuBatch;
     private javax.swing.JTextField numProc;
     private javax.swing.JComboBox optionsBox;
     private javax.swing.JTextArea resultsArea;
     private javax.swing.JButton runButton;
     private javax.swing.JCheckBox savList;
     private javax.swing.JTextField savName;
+    private javax.swing.JCheckBoxMenuItem useSavBox;
     // End of variables declaration//GEN-END:variables
 
 public static ArrayList<Process> copy(ArrayList<Process> origin){

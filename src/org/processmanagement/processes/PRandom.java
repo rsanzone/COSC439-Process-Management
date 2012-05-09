@@ -40,11 +40,13 @@ public class PRandom {
 		//create a random num between 1 and MAX_PROCESS_NUMBER
 		int processNum = randomInt(1, MAX_PROCESS_NUMBER);
 		ArrayList<Process> processList = new ArrayList<Process>();
+                String allProc="";
 		// populate a list with the generated number of processes
 		for (int i = 1; i <= processNum; i++) {
 			processList.add(randomProcess(i));
 		}
-		System.out.println(processNum+" processes have been generated!");
+		allProc+=("\n"+processNum+" processes have been generated!");
+                JOptionPane.showMessageDialog(null, allProc, "Message", JOptionPane.INFORMATION_MESSAGE);
 		return processList;
 	}
 	private Process randomProcess(int count){
